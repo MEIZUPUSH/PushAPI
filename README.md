@@ -231,9 +231,9 @@ messageJson|Json格式，具体如下必填
     "advanceInfo": {
         "suspend":是否通知栏悬浮窗显示 (1 显示  0 不显示) 【int 非必填，默认1】
         "clearNoticeBar":是否可清除通知栏 (1 可以  0 不可以) 【int 非必填，默认1】
-	"isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
-	"fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
-	"fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
+        "isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
+        "fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
+        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
         "notificationType": {
             "vibrate":  震动 (0关闭  1 开启) ,  【int 非必填，默认1】
             "lights":   闪光 (0关闭  1 开启), 【int 非必填，默认1】
@@ -347,9 +347,9 @@ messageJson|Json格式，具体如下必填
     "advanceInfo": {
         "suspend":是否通知栏悬浮窗显示 (1 显示  0 不显示) 【int 非必填，默认1】
         "clearNoticeBar":是否可清除通知栏 (1 可以  0 不可以) 【int 非必填，默认1】
-	"isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
-	"fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
-	"fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】	
+        "isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
+        "fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
+        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
         "notificationType": {
             "vibrate":  震动 (0关闭  1 开启) ,  【int 非必填，默认1】
             "lights":   闪光 (0关闭  1 开启), 【int 非必填，默认1】
@@ -612,9 +612,9 @@ messageJson|Json格式，具体如下必填
     "advanceInfo": {
         "suspend":是否通知栏悬浮窗显示 (1 显示  0 不显示) 【int 非必填，默认1】
         "clearNoticeBar":是否可清除通知栏 (1 可以  0 不可以) 【int 非必填，默认1】
-	"isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
-	"fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
-	"fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】	
+        "isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
+        "fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
+        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】	
         "notificationType": {
             "vibrate":  震动 (0关闭  1 开启) ,  【string 非必填，默认1】
             "lights":   闪光 (0关闭  1 开启), 【string 非必填，默认1】
@@ -721,9 +721,9 @@ messageJson|Json格式，具体如下必填
         "fixSpeedRate": 定速速率 【fixSpeed为是时，必填】
         "suspend":是否通知栏悬浮窗显示  1 显示  0 不显示 【非必填，默认0】
         "clearNoticeBar":是否可清除通知栏  1 可以  0 不可以 【非必填，默认1】
-	"isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
-	"fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
-	"fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】	
+        "isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
+        "fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
+        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】	
         "notificationType": {
             "vibrate":  震动  0关闭  1 开启 ,  【非必填，默认1】
             "lights":   闪光  0关闭  1 开启, 【非必填，默认1】
