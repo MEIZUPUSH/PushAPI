@@ -7,8 +7,11 @@
 | 2016-10-10 | JasperXgwang | 1.0.0-RC01| 撰写文档 |
 | 2016-10-12 | JasperXgwang | 1.0.0-RC02| 通知栏点击类型增加应用客户端自定义参数 |
 | 2016-10-15 | JasperXgwang | 1.0.0-RC03| 通知栏推送增加定时展示功能 
+| 2016-11-08 | Jasperxgwang	| 1.0.0-RC04|增加别名推送&推送统计接口
 
 # 目录 <a name="index"/>
+* [平台介绍](#push_index)
+    * [名称解释](#resolution_index)
 * [一.API接口规范](#api_standard_index)
     * [接口响应规范](#api_resp_index)
     * [接口签名规范](#api_sign_index)
@@ -18,17 +21,44 @@
         * [应用场景](#yycj_1_index)
         * [pushId推送接口（透传消息）](#UnVarnishedMessage_push_index)
         * [pushId推送接口（通知栏消息）](#VarnishedMessage_push_index)
+        * [别名推送接口（透传消息）](#UnVarnishedMessage_alias_push_index)
+        * [别名推送接口（通知栏消息）](#VarnishedMessage_alias_push_index)
     * [任务推送](#task_push_index)  
-        * [pushId推送](#pushId_index)
+        * [pushId&别名推送](#pushId_index)
             * [应用场景](#yycj_2_index)
             * [获取推送taskId](#getTaskId_index)
             * [pushId推送接口（透传消息）](#UnVarnishedMessage_task_push_index)
             * [pushId推送接口（通知栏消息）](#VarnishedMessage_task_push_index)
+            * [别名推送接口（透传消息）](#UnVarnishedMessage_alias_task_push_index)
+            * [别名推送接口（通知栏消息）](#VarnishedMessage_alias_task_push_index)
         * [全部&标签推送](#all_tag_push_index)
             * [应用场景](#yycj_3_index)
             * [应用全部推送](#pushToApp_index)
             * [应用标签推送](#pushToTag_index)
             * [取消任务推送](#cancelTask_index)
+    * [推送统计](#task_statistics_index) 
+        * [获取任务推送统计](#getTaskStatistics_index)
+
+# 平台介绍 <a name="push_index"/>
+## 名称解释 <a name="resolution_index"/>
+
+1. **pushId**，平台使用 pushId 来标识每个独立的用户，每一台终端上每一个 app 拥有一个独立的pushId，通过pushSDK订阅后返回对应的pushId
+1. **appId**，应用唯一标识，客户端&服务端SDK初始化时使用
+1. **appkey**，客户端身份标识，客户端SDK初始化使用
+1. **appSecret**，服务端身份标识，服务端SDK初始化使用
+1. **目标数**，计划推送的目标数；
+1. **有效数**，从目标数中去除错误或无效的ID，实际有效的ID数量。筛选包括开关状态，订阅状态，pushId有效性以及其他可以推送状态；
+1. **推送数**，Push平台实际下发推送的数量;
+1. **接收数**，Push服务接收数，任务有效期内，联网并正常接收到推送消息的数量；
+1. **展示数**，客户端从Push服务收到消息，并在通知栏中展示的数量（3.0以下版本SDK，数据统计T+1，3.0以上实时统计。透传消息没有展示数统计）
+1. **点击数**，用户点击消息的数量（3.0以下版本SDK，数据统计T+1，3.0以上实时统计。透传消息没有点击数统计）
+透传消息，即自定义消息，平台只负责消息传递，不做任何处理，客户端在接收到透传消息后需要自己去处理消息的展示方式或后续动作。
+1. **通知栏消息**，push平台定义的统一通知栏展示规范样式，通知栏由push服务打开，支持通知栏被点击后展示后续动作，包括打开应用，打开应用具体页面，打开UAI地址，以及点击后传递参数由应用自己处理。
+1. **在线用户数**，通过push服务统计的此应用实时在线用户数。
+1. **累积用户数**，通过push服务统计的此应用历史累积用户数。
+1. **标签**：标签是客户端进行群体分类的标识，标签表现为，客户端为自身增加归类群体，例如，客户端设置自身为“体育”和“科技”两类标签，业务进行推送时，仅给具有次两类标签的用户进行推送。例如RSS进行新闻媒体的订阅。标签的限额目前为100个。
+1. **别名**：别名为接入应用的标识，表现为帐号名称或昵称等信息。每一个应用用户仅能设置一个别名，当多个用户设置同一个别名的时候，对此别名进行推送，则会同时向多个用户推送消息，应用可为每个设备ID(即PushId) 设定一个别名(Alias)，方便开发者与自有的ID系统进行关联，避免因需要保存设备PushId与自有帐号的对应关系而给开发者带来额外的开发和存储成本。
+
 
 # API接口规范 <a name="api_standard_index"/>
 ## 接口响应规范 <a name="api_resp_index"/>
@@ -92,8 +122,9 @@ code|value
 518|推送超过配置的速率
 519|推送消息失败服务过载
 520|消息折叠（短时间内同一设备同一消息收到多次）
-110002|pushId未订阅
+110002|pushId未订阅(包括推送开关关闭的设备)
 110003|pushId非法
+110005|别名未订阅(包括推送开关关闭的设备)
 
 **注：平台使用pushId来标识每个独立的用户，每一台终端上每一个app拥有一个独立的pushId**
 
@@ -290,6 +321,184 @@ messageJson|Json格式，具体如下必填
     "redirect": ""
 }
 ```
+
+### 别名推送接口（透传消息） <a name="UnVarnishedMessage_alias_push_index"/>
+
+描述|内容
+---|---
+接口功能|根据别名推送
+请求方法|Post
+请求路径|/garcia/api/server/push/unvarnished/pushByAlias
+请求HOST|api-push.meizu.com
+请求头|无
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+alias|推送别名，多个英文逗号分割必填
+sign|签名 必填
+messageJson|Json格式，具体如下必填
+
+```
+{
+    "title": 推送标题, 【string 非必填，字数显示1~32个】
+    "content": 推送内容,  【string 必填，字数限制2000以内】
+    "pushTimeInfo": {
+        "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
+        "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
+    }
+}
+```
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "redirect": "",
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110005": [
+            "alias1",
+            "alias2"
+        ]
+    },
+    "redirect": ""
+}
+```
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
+
+### 别名推送接口（通知栏消息） <a name="VarnishedMessage_alias_push_index"/>
+
+描述|内容
+---|---
+接口功能|根据别名推送
+请求方法|Post
+请求路径|/garcia/api/server/push/varnished/pushByAlias
+请求HOST|api-push.meizu.com
+请求头|无
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+alias|推送别名，多个英文逗号分割必填
+sign|签名 必填
+messageJson|Json格式，具体如下必填
+
+```
+{
+    "noticeBarInfo": {
+        "noticeBarType": 通知栏样式(0, "标准")【int 非必填，值为0】
+        "title": 推送标题, 【string 必填，字数限制1~32】
+        "content": 推送内容, 【string 必填，字数限制1~100】
+    },
+    "noticeExpandInfo": {
+        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
+        "noticeExpandContent": 展开内容, 【string noticeExpandType为文本时，必填】
+    },
+    "clickTypeInfo": {
+        "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
+        "url": URI页面地址, 【string clickType为打开URI页面时，必填, 长度限制1000字节】
+        "parameters":参数 【JSON格式】【非必填】 
+        "activity":应用页面地址 【string clickType为打开应用页面时，必填, 长度限制1000字节】
+        "customAttribute":应用客户端自定义【string clickType为应用客户端自定义时，必填， 输入长度为1000字节以内】
+    },
+    "pushTimeInfo": {
+        "offLine": 是否进离线消息(0 否 1 是[validTime]) 【int 非必填，默认值为1】
+        "validTime": 有效时长 (1 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
+    },
+    "advanceInfo": {
+        "suspend":是否通知栏悬浮窗显示 (1 显示  0 不显示) 【int 非必填，默认1】
+        "clearNoticeBar":是否可清除通知栏 (1 可以  0 不可以) 【int 非必填，默认1】
+        "isFixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
+        "fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
+        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
+        "notificationType": {
+            "vibrate":  震动 (0关闭  1 开启) ,  【int 非必填，默认1】
+            "lights":   闪光 (0关闭  1 开启), 【int 非必填，默认1】
+            "sound":   声音 (0关闭  1 开启), 【int 非必填，默认1】
+        }
+    }
+}
+
+```
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "redirect": "",
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110005": [
+            "alias1",
+            "alisa2"
+        ]
+    },
+    "redirect": ""
+}
+
+```
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
 
 
 ## 任务推送 <a name="task_push_index"/>
@@ -533,6 +742,156 @@ sign|签名 必填
         ],
         "110003": [
             "J0476035d625e6c64567f714567e040e7d017f0558675b"
+        ]
+    },
+    "redirect": ""
+}
+```
+
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
+#### 别名推送接口（透传消息） <a name="UnVarnishedMessage_alias_task_push_index"/>
+
+描述|内容
+---|---
+接口功能|根据别名推送
+请求方法|Post
+请求路径|/garcia/api/server/push/task/unvarnished/pushByAlias
+请求HOST|api-push.meizu.com
+请求头|无
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+
+参数|描述
+---|---
+taskId|推送任务ID 必填 
+appId|推送应用ID 必填
+alias|推送别名，多个英文逗号分割必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "redirect": "",
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "110032",
+    "message": "非法的taskId",
+    "redirect": "",
+    "value": ""
+}
+```
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110005": [
+            "alias1",
+            "alias2"
+        ]
+    },
+    "redirect": ""
+}
+```
+
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
+#### 别名推送接口（通知栏消息） <a name="VarnishedMessage_alias_task_push_index"/>
+
+描述|内容
+---|---
+接口功能|根据别名推送
+请求方法|Post
+请求路径|/garcia/api/server/push/task/varnished/pushByAlias
+请求HOST|api-push.meizu.com
+请求头|无
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+
+参数|描述
+---|---
+taskId|推送任务ID 必填 
+appId|推送应用ID 必填
+alias|推送别名，多个英文逗号分割必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "redirect": "",
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "110032",
+    "message": "非法的taskId",
+    "redirect": "",
+    "value": ""
+}
+```
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110005": [
+            "alias1",
+            "alias2"
         ]
     },
     "redirect": ""
@@ -833,6 +1192,63 @@ sign|签名 必填
 {
     "code": "500",
     "message": "任务已取消[已完成]，无法取消",
+    "redirect": "",
+    "value": ""
+}
+```
+## 推送统计 <a name="task_statistics_index"/>
+### 获取任务推送统计 <a name="getTaskStatistics_index"/>
+
+
+描述|内容
+---|---
+接口功能|获取任务推送统
+请求方法|Get
+请求路径|/garcia/api/server/push/statistics/getTaskStatistics
+请求HOST|api-push.meizu.com
+请求头|无
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+taskId|任务ID
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+ {
+    "code": "200",
+    "message": "",
+    "redirect": "",
+    "value": {
+        "taskId": 任务Id,
+        "targetNo": 目标数,
+        "validNo": 有效数,
+        "pushedNo": 推送数,
+        "acceptNo ": 接收数,
+        "displayNo": 展示数,
+        "clickNo": 点击数
+    }
+}
+
+```
+
+> 失败情况：
+
+
+```
+{
+    "code": "110032",
+    "message": "非法的taskId",
     "redirect": "",
     "value": ""
 }
