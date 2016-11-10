@@ -105,6 +105,30 @@ code|value
 > 
 > 服务端SDK调用API的应用的私钥Secret Key为 appSecret
 
+```java
+   /**
+     * @param paramMap 请求参数
+     * @param secret   密钥
+     * @return md5摘要
+     */
+    public static String getSignature(Map<String, String> paramMap, String secret) {
+        // 先将参数以其参数名的字典序升序进行排序
+        Map<String, String> sortedParams = new TreeMap<String, String>(paramMap);
+        Set<Entry<String, String>> entrys = sortedParams.entrySet();
+
+        // 遍历排序后的字典，将所有参数按"key=value"格式拼接在一起
+        StringBuilder basestring = new StringBuilder();
+        for (Entry<String, String> param : entrys) {
+            basestring.append(param.getKey()).append("=").append(param.getValue());
+        }
+        basestring.append(secret);
+
+        logger.debug("basestring is:{}", new Object[]{basestring.toString()});
+
+        // 使用MD5对待签名串求签
+        return MD5Util.MD5Encode(basestring.toString());
+    }
+```
 
 # API说明 <a name="api_common_index"/>
 
