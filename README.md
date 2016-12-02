@@ -265,9 +265,9 @@ messageJson|Json格式，具体如下必填
 ```
 {
     "noticeBarInfo": {
-        "noticeBarType": 通知栏样式(0, "标准")【int 非必填，值为0】
-        "title": 推送标题, 【string 必填，字数限制1~32】
-        "content": 推送内容, 【string 必填，字数限制1~100】
+        "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
+        "title": 推送标题, 【string 必填，字数限制1~32字符】
+        "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
         "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
@@ -282,7 +282,7 @@ messageJson|Json格式，具体如下必填
     },
     "pushTimeInfo": {
         "offLine": 是否进离线消息(0 否 1 是[validTime]) 【int 非必填，默认值为1】
-        "validTime": 有效时长 (1 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
+        "validTime": 有效时长 (1到72 小时内的正整数) 【int offLine值为1时，必填，默认24】
     },
     "advanceInfo": {
         "suspend":是否通知栏悬浮窗显示 (1 显示  0 不显示) 【int 非必填，默认1】
@@ -370,8 +370,8 @@ messageJson|Json格式，具体如下必填
 
 ```
 {
-    "title": 推送标题, 【string 非必填，字数显示1~32个】
-    "content": 推送内容,  【string 必填，字数限制2000以内】
+    "title": 推送标题, 【string 非必填，字数显示1~32个字符】
+    "content": 推送内容,  【string 必填，字数限制2000字节以内】
     "pushTimeInfo": {
         "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
         "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
@@ -446,9 +446,9 @@ messageJson|Json格式，具体如下必填
 ```
 {
     "noticeBarInfo": {
-        "noticeBarType": 通知栏样式(0, "标准")【int 非必填，值为0】
-        "title": 推送标题, 【string 必填，字数限制1~32】
-        "content": 推送内容, 【string 必填，字数限制1~100】
+        "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
+        "title": 推送标题, 【string 必填，字数限制1~32字符】
+        "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
         "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
@@ -559,9 +559,9 @@ messageJson|Json格式，具体如下必填
 ```
 {
     "noticeBarInfo": {
-        "noticeBarType": 通知栏样式(0, "标准")【int 非必填，值为0】
-        "title": 推送标题, 【string 必填，字数限制1~32】
-        "content": 推送内容, 【string 必填，字数限制1~100】
+        "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
+        "title": 推送标题, 【string 必填，字数限制1~32字符】
+        "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
         "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
@@ -598,8 +598,8 @@ messageJson|Json格式，具体如下必填
 
 ```
 {
-    "title": 推送标题, 【string 必填，字数显示1~32个】
-    "content": 推送内容,  【string 必填，字数限制2000以内】
+    "title": 推送标题, 【string 必填，字数显示1~32个字符】
+    "content": 推送内容,  【string 必填，字数限制2000字节以内】
     "pushTimeInfo": {
         "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
         "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
@@ -972,9 +972,9 @@ messageJson|Json格式，具体如下必填
 ```
 {
     "noticeBarInfo": {
-        "noticeBarType": 通知栏样式(0, "标准")【int 非必填，值为0】
-        "title": 推送标题, 【string 必填，字数限制1~32】
-        "content": 推送内容, 【string 必填，字数限制1~100】
+        "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
+        "title": 推送标题, 【string 必填，字数限制1~32字符】
+        "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
         "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
@@ -1015,7 +1015,7 @@ messageJson|Json格式，具体如下必填
 ```
 {
     "title": 推送标题, 【string 必填，字数显示1~32个字符】
-    "content": 推送内容,  【string 必填，字数限制2000byte以内】
+    "content": 推送内容,  【string 必填，字数限制2000字节以内】
     "pushTimeInfo": {
         "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
         "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
@@ -1079,7 +1079,7 @@ messageJson|Json格式，具体如下必填
 ```
 {
     "noticeBarInfo": {
-        "noticeBarType": 通知栏类型(0, "默认") 【必填，值为0】
+       "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
         "title": 推送标题, 【必填，字数限制1~32字符】
         "content": 推送内容, 【必填，字数限制1~100个字符】
     },
@@ -1125,7 +1125,7 @@ messageJson|Json格式，具体如下必填
 ```
 {
     "title": 推送标题, 【string 必填，字数显示1~32个字符】
-    "content": 推送内容,  【string 必填，字数限制2000byte以内】
+    "content": 推送内容,  【string 必填，字数限制2000字节以内】
     "pushTimeInfo": {
         "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
         "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
