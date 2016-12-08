@@ -168,7 +168,7 @@ code|value
 请求方法|Post
 请求路径|/garcia/api/server/push/unvarnished/pushByPushId
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -248,7 +248,7 @@ messageJson|Json格式，具体如下必填
 请求方法|Post
 请求路径|/garcia/api/server/push/varnished/pushByPushId
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -354,7 +354,7 @@ messageJson|Json格式，具体如下必填
 请求方法|Post
 请求路径|/garcia/api/server/push/unvarnished/pushByAlias
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -429,7 +429,7 @@ messageJson|Json格式，具体如下必填
 请求方法|Post
 请求路径|/garcia/api/server/push/varnished/pushByAlias
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -539,7 +539,7 @@ messageJson|Json格式，具体如下必填
 请求方法|Post
 请求路径|/garcia/api/server/push/pushTask/getTaskId
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -634,7 +634,7 @@ messageJson|Json格式，具体如下必填
 请求方法|Post
 请求路径|/garcia/api/server/push/task/unvarnished/pushByPushId
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -713,7 +713,7 @@ sign|签名 必填
 请求方法|Post
 请求路径|/garcia/api/server/push/task/varnished/pushByPushId
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -792,7 +792,7 @@ sign|签名 必填
 请求方法|Post
 请求路径|/garcia/api/server/push/task/unvarnished/pushByAlias
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -867,7 +867,7 @@ sign|签名 必填
 请求方法|Post
 请求路径|/garcia/api/server/push/task/varnished/pushByAlias
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -952,7 +952,7 @@ sign|签名 必填
 请求方法|Post
 请求路径|/garcia/api/server/push/pushTask/pushToApp
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -1057,7 +1057,7 @@ messageJson|Json格式，具体如下必填
 请求方法|Post
 请求路径|/garcia/api/server/push/pushTask/pushToTag
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -1172,7 +1172,7 @@ messageJson|Json格式，具体如下必填
 请求方法|Post
 请求路径|/garcia/api/server/push/pushTask/cancel
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
@@ -1230,7 +1230,7 @@ sign|签名 必填
 请求方法|Get
 请求路径|/garcia/api/server/push/statistics/getTaskStatistics
 请求HOST|api-push.meizu.com
-请求头|无
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
 备注|签名参数 sign=MD5_SIGN
 请求内容|无
 响应码|200
