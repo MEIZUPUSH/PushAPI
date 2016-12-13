@@ -178,7 +178,7 @@ code|value
 参数|描述
 ---|---
 appId|推送应用ID 必填
-pushIds|推送设备，多个英文逗号分割必填
+pushIds|推送设备，一批最多不能超过1000个 多个英文逗号分割必填
 sign|签名 必填
 messageJson|Json格式，具体如下必填
 
@@ -258,7 +258,7 @@ messageJson|Json格式，具体如下必填
 参数|描述
 ---|---
 appId|推送应用ID 必填
-pushIds|推送设备，多个英文逗号分割必填
+pushIds|推送设备，一批最多不能超过1000个 多个英文逗号分割必填
 sign|签名 必填
 messageJson|Json格式，具体如下必填
 
@@ -364,7 +364,7 @@ messageJson|Json格式，具体如下必填
 参数|描述
 ---|---
 appId|推送应用ID 必填
-alias|推送别名，多个英文逗号分割必填
+alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
 sign|签名 必填
 messageJson|Json格式，具体如下必填
 
@@ -439,7 +439,7 @@ messageJson|Json格式，具体如下必填
 参数|描述
 ---|---
 appId|推送应用ID 必填
-alias|推送别名，多个英文逗号分割必填
+alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
 sign|签名 必填
 messageJson|Json格式，具体如下必填
 
@@ -724,7 +724,7 @@ sign|签名 必填
 ---|---
 taskId|推送任务ID 必填 
 appId|推送应用ID 必填
-pushIds|推送设备，多个英文逗号分割必填
+pushIds|推送设备，一批最多不能超过1000个 多个英文逗号分割必填
 sign|签名 必填
 
 
@@ -803,7 +803,7 @@ sign|签名 必填
 ---|---
 taskId|推送任务ID 必填 
 appId|推送应用ID 必填
-alias|推送别名，多个英文逗号分割必填
+alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
 sign|签名 必填
 
 
@@ -878,7 +878,7 @@ sign|签名 必填
 ---|---
 taskId|推送任务ID 必填 
 appId|推送应用ID 必填
-alias|推送别名，多个英文逗号分割必填
+alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
 sign|签名 必填
 
 
