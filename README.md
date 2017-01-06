@@ -1,8 +1,6 @@
 # 魅族开放平台PUSH系统HTTP接口文档
 
 # 目录 <a name="index"/>
-* [平台介绍](#push_index)
-    * [名称解释](#resolution_index)
 * [一.API接口规范](#api_standard_index)
     * [接口响应规范](#api_resp_index)
     * [接口签名规范](#api_sign_index)
@@ -29,27 +27,6 @@
             * [取消任务推送](#cancelTask_index)
     * [推送统计](#task_statistics_index) 
         * [获取任务推送统计](#getTaskStatistics_index)
-
-# 平台介绍 <a name="push_index"/>
-## 名称解释 <a name="resolution_index"/>
-
-1. **pushId**，平台使用 pushId 来标识每个独立的用户，每一台终端上每一个 app 拥有一个独立的pushId，通过pushSDK订阅后返回对应的pushId
-1. **appId**，应用唯一标识，客户端&服务端SDK初始化时使用
-1. **appkey**，客户端身份标识，客户端SDK初始化使用
-1. **appSecret**，服务端身份标识，服务端SDK初始化使用
-1. **目标数**，计划推送的目标数；
-1. **有效数**，从目标数中去除错误或无效的ID，实际有效的ID数量。筛选包括开关状态，订阅状态，pushId有效性以及其他可以推送状态；
-1. **推送数**，Push平台实际下发推送的数量;
-1. **接收数**，Push服务接收数，任务有效期内，联网并正常接收到推送消息的数量；
-1. **展示数**，客户端从Push服务收到消息，并在通知栏中展示的数量（3.0以下版本SDK，数据统计T+1，3.0以上实时统计。透传消息没有展示数统计）
-1. **点击数**，用户点击消息的数量（3.0以下版本SDK，数据统计T+1，3.0以上实时统计。透传消息没有点击数统计）
-透传消息，即自定义消息，平台只负责消息传递，不做任何处理，客户端在接收到透传消息后需要自己去处理消息的展示方式或后续动作。
-1. **通知栏消息**，push平台定义的统一通知栏展示规范样式，通知栏由push服务打开，支持通知栏被点击后展示后续动作，包括打开应用，打开应用具体页面，打开UAI地址，以及点击后传递参数由应用自己处理。
-1. **在线用户数**，通过push服务统计的此应用实时在线用户数。
-1. **累积用户数**，通过push服务统计的此应用历史累积用户数。
-1. **标签**：标签是客户端进行群体分类的标识，标签表现为，客户端为自身增加归类群体，例如，客户端设置自身为“体育”和“科技”两类标签，业务进行推送时，仅给具有次两类标签的用户进行推送。例如RSS进行新闻媒体的订阅。标签的限额目前为100个。
-1. **别名**：别名为接入应用的标识，表现为帐号名称或昵称等信息。每一个应用用户仅能设置一个别名，当多个用户设置同一个别名的时候，对此别名进行推送，则会同时向多个用户推送消息，应用可为每个设备ID(即PushId) 设定一个别名(Alias)，方便开发者与自有的ID系统进行关联，避免因需要保存设备PushId与自有帐号的对应关系而给开发者带来额外的开发和存储成本。
-
 
 # API接口规范 <a name="api_standard_index"/>
 ## 接口响应规范 <a name="api_resp_index"/>
@@ -118,8 +95,22 @@ code|value
         logger.debug("basestring is:{}", new Object[]{basestring.toString()});
 
         // 使用MD5对待签名串求签
-        return MD5Util.MD5Encode(basestring.toString());
+        return MD5Util.MD5Encode(basestring.toString(),"UTF-8");
     }
+    
+    //示例，注意是针对接口中所有参数做签名，并且是原始字符串（非urlencode）
+    public static void main(String[] args) {
+        //本示例为三个参数 appId、pushIds、messageJson
+        Map<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("appId", "10000");
+        paramMap.put("pushIds", "RA50c6348036344485d01776773577c64740465480a6b");
+        paramMap.put("messageJson", "{\"title\":\"title\",\"content\":\"content\",\"pushTimeInfo\":{\"offLine\":1,\"validTime\":24}}");
+        String sign = SignUtils.getSignature(paramMap, "<APP_SECRET>");
+    }
+    //MD5原始字符串为
+    appId=10000messageJson={"title": "title","content": "content","pushTimeInfo": {"offLine": 1,"validTime": 24}}pushIds=RA50c6348036344485d01776773577c64740465480a6b<APP_SECRET>
+    //MD5摘要 sign为
+    ac076ff25d9900015a681cb5172aa53b
 ```
 
 # API说明 <a name="api_common_index"/>
