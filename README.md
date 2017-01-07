@@ -4,6 +4,7 @@
 * [一.API接口规范](#api_standard_index)
     * [接口响应规范](#api_resp_index)
     * [接口签名规范](#api_sign_index)
+    * [接口请求示例](#api_demo_index)
 * [二.API说明](#api_common_index) 
     * [前言](#preface_index)      
     * [非任务推送](#untask_push_index)  
@@ -95,11 +96,11 @@ code|value
         logger.debug("basestring is:{}", new Object[]{basestring.toString()});
 
         // 使用MD5对待签名串求签
-        return MD5Util.MD5Encode(basestring.toString(),"UTF-8");
+        return MD5Util.MD5Encode(basestring.toString(),"UTF-8");
     }
     
-    //示例，注意是针对接口中所有参数做签名，并且是原始字符串（非urlencode）
-    public static void main(String[] args) {
+   //示例，注意是针对接口中所有参数做签名，并且是原始字符串（非urlencode）
+    public static void main(String[] args) {
         //本示例为三个参数 appId、pushIds、messageJson
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("appId", "10000");
@@ -112,6 +113,37 @@ code|value
     //MD5摘要 sign为
     ac076ff25d9900015a681cb5172aa53b
 ```
+## 接口请求示例 <a name="api_demo_index"/>
+
+```
+POST http://api-push.meizu.com/garcia/api/server/push/unvarnished/pushByAlias HTTP/1.1
+Host: api-push.meizu.com
+Connection: keep-alive
+Content-Length: 226
+Cache-Control: no-cache
+Content-Type: application/x-www-form-urlencoded
+Accept: */*
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.8
+
+alias=xxx&appId=xxx&messageJson=%7B%22title%22%3A%22title%22%2C%22content%22%3A%22hello+test%22%2C%22pushTimeInfo%22%3A%7B%22offLine%22%3A1%2C%22validTime%22%3A24%7D%7D&sign=a68b75e5d5b30e35536f130cf1cae14a
+
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Wed, 28 Dec 2016 03:34:53 GMT
+Content-Type: application/json; charset=UTF-8
+Content-Length: 87
+Connection: keep-alive
+Content-Language: zh-CN
+Set-Cookie: JSESSIONID=1wl3nhcfqroiicj6pvxwdvjx6;Path=/
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+
+
+{"code":"200","message":"","value":{"110005":["xxxxxx"]},"redirect":""}
+```
+
+
 
 # API说明 <a name="api_common_index"/>
 
