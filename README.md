@@ -40,6 +40,7 @@
 	“message”:”“, //可选，返回消息，网页端接口出现错误时使用此消息展示给用户，手机端可忽略此消息，甚至服务端不传输此消息
 	“value”:”“,// 必选，返回结果
 	“redirect”:”“ //可选, returnCode=300 重定向时，使用此URL重新请求
+	“msgId”: ”“//可选，消息推送msgId
 }
 ```
 > Api returnCode定义
@@ -213,7 +214,7 @@ messageJson|Json格式，具体如下必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -235,7 +236,7 @@ messageJson|Json格式，具体如下必填
             "J0476035d625e6c64567f714567e040e7d017f0558675b"
         ]
     },
-    "redirect": ""
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 ```
 
@@ -320,7 +321,7 @@ messageJson|Json格式，具体如下必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -342,7 +343,7 @@ messageJson|Json格式，具体如下必填
             "J0476035d625e6c64567f714567e040e7d017f0558675b"
         ]
     },
-    "redirect": ""
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 
 ```
@@ -399,7 +400,7 @@ messageJson|Json格式，具体如下必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -417,7 +418,7 @@ messageJson|Json格式，具体如下必填
             "alias2"
         ]
     },
-    "redirect": ""
+   "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 ```
 
@@ -501,7 +502,7 @@ messageJson|Json格式，具体如下必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -519,7 +520,7 @@ messageJson|Json格式，具体如下必填
             "alisa2"
         ]
     },
-    "redirect": ""
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 
 ```
@@ -669,7 +670,7 @@ sign|签名 必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -701,7 +702,7 @@ sign|签名 必填
             "J0476035d625e6c64567f714567e040e7d017f0558675b"
         ]
     },
-    "redirect": ""
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 ```
 
@@ -748,7 +749,7 @@ sign|签名 必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -780,7 +781,7 @@ sign|签名 必填
             "J0476035d625e6c64567f714567e040e7d017f0558675b"
         ]
     },
-    "redirect": ""
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 ```
 
@@ -827,7 +828,7 @@ sign|签名 必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -855,7 +856,7 @@ sign|签名 必填
             "alias2"
         ]
     },
-    "redirect": ""
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 ```
 
@@ -902,7 +903,7 @@ sign|签名 必填
 {
     "code": "200",
     "message": "",
-    "redirect": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
     "value": {}
 }
 ```
@@ -930,7 +931,7 @@ sign|签名 必填
             "alias2"
         ]
     },
-    "redirect": ""
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
 }
 ```
 
