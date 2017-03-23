@@ -28,7 +28,17 @@
             * [取消任务推送](#cancelTask_index)
     * [推送统计](#task_statistics_index) 
         * [获取任务推送统计](#getTaskStatistics_index)
-
+    * [订阅服务](#sub_index) 
+        * [获取订阅开关状态](#sub_index_1)
+        * [修改订阅开关状态](#sub_index_2)
+        * [修改所有开关状态](#sub_index_3)
+        * [别名订阅](#sub_index_4)
+        * [取消别名订阅](#sub_index_5)
+        * [获取订阅别名](#sub_index_6)
+        * [标签订阅](#sub_index_7)
+        * [取消标签订阅](#sub_index_8)
+        * [获取订阅标签](#sub_index_9)
+        * [取消订阅所有标签](#sub_index_10)
 # API接口规范 <a name="api_standard_index"/>
 ## 接口响应规范 <a name="api_resp_index"/>
 > HTTP接口遵循魅族API协议规范。返回数据格式统一如下：
@@ -36,11 +46,11 @@
 
 ```
 {
-	“code”:”“, //必选,返回码
-	“message”:”“, //可选，返回消息，网页端接口出现错误时使用此消息展示给用户，手机端可忽略此消息，甚至服务端不传输此消息
-	“value”:”“,// 必选，返回结果
-	“redirect”:”“ //可选, returnCode=300 重定向时，使用此URL重新请求
-	“msgId”: ”“//可选，消息推送msgId
+    “code”:”“, //必选,返回码
+    “message”:”“, //可选，返回消息，网页端接口出现错误时使用此消息展示给用户，手机端可忽略此消息，甚至服务端不传输此消息
+    “value”:”“,// 必选，返回结果
+    “redirect”:”“ //可选, returnCode=300 重定向时，使用此URL重新请求
+    “msgId”: ”“//可选，消息推送msgId
 }
 ```
 > Api returnCode定义
@@ -1011,7 +1021,7 @@ messageJson|Json格式，具体如下必填
         "clearNoticeBar":是否可清除通知栏 (1 可以  0 不可以) 【int 非必填，默认1】
         "fixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
         "fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
-        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】	
+        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】   
         "notificationType": {
             "vibrate":  震动 (0关闭  1 开启) ,  【string 非必填，默认1】
             "lights":   闪光 (0关闭  1 开启), 【string 非必填，默认1】
@@ -1120,7 +1130,7 @@ messageJson|Json格式，具体如下必填
         "clearNoticeBar":是否可清除通知栏  1 可以  0 不可以 【非必填，默认1】
         "fixDisplay":是否定时展示 (1 是  0 否) 【int 非必填，默认0】
         "fixStartDisplayTime": 定时展示开始时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】
-        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】	
+        "fixEndDisplayTime ": 定时展示结束时间(yyyy-MM-dd HH:mm:ss) 【str 非必填】   
         "notificationType": {
             "vibrate":  震动  0关闭  1 开启 ,  【非必填，默认1】
             "lights":   闪光  0关闭  1 开启, 【非必填，默认1】
@@ -1289,4 +1299,437 @@ sign|签名 必填
     "redirect": "",
     "value": ""
 }
+```
+
+## 订阅服务 <a name="sub_index"/>
+### 获取订阅开关状态  <a name="sub_index_1"/>
+
+
+描述|内容
+---|---
+接口功能|获取订阅开关状态
+请求方法|Get
+请求路径|/garcia/api/server/message/getRegisterSwitch
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|如下
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "value": {
+ "barTypeSwitch": int 类型 通知栏消息开关 0 关 1 开,
+ "directTypeSwitch":int 类型 透传消息开关 0 关 1 开,
+ "pushId": string 类型 注册 push 后唯一标识
+ }
+}
+
+```
+
+### 修改订阅开关状态 <a name="sub_index_2"/>
+
+
+描述|内容
+---|---
+接口功能|修改订阅开关状态
+请求方法|Post
+请求路径|/garcia/api/server/message/changeRegisterSwitch
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+msgType|int 类型 (0,"状态栏推送"),(1,"透传消息"); 必填
+subSwitch|开关状态 0 关 1 开 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "barTypeSwitch": int 类型 通知栏消息开关 0 关 1 开,
+ "directTypeSwitch":int 类型 透传消息开关 0 关 1 开,
+ "pushId": string 类型 注册 push 后唯一标识
+ }
+}
+
+```
+
+### 修改所有开关状态  <a name="sub_index_3"/>
+
+
+描述|内容
+---|---
+接口功能|修改所有开关状态
+请求方法|Post
+请求路径|/garcia/api/server/message/changeAllSwitch
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+subSwitch|开关状态 0 关 1 开 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "barTypeSwitch": int 类型 通知栏消息开关 0 关 1 开,
+ "directTypeSwitch":int 类型 透传消息开关 0 关 1 开,
+ "pushId": string 类型 注册 push 后唯一标识
+ }
+}
+
+```
+
+### 别名订阅  <a name="sub_index_4"/>
+
+
+描述|内容
+---|---
+接口功能|别名订阅
+请求方法|Post
+请求路径|/garcia/api/server/message/subscribeAlias
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+alias|订阅别名（60字符限制）必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "pushId": string 类型 注册 push 后唯一标识
+ “alias”: string 类型
+ }
+}
+
+```
+
+### 取消别名订阅  <a name="sub_index_5"/>
+
+
+描述|内容
+---|---
+接口功能|取消别名订阅
+请求方法|Post
+请求路径|/garcia/api/server/message/unSubscribeAlias
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "pushId": string 类型 注册 push 后唯一标识
+ “alias”: string 类型
+ }
+}
+
+```
+
+### 获取订阅别名  <a name="sub_index_6"/>
+
+
+描述|内容
+---|---
+接口功能|获取订阅别名
+请求方法|Get
+请求路径|/garcia/api/server/message/getSubAlias
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|如下
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "pushId": string 类型 注册 push 后唯一标识
+ “alias”: string 类型
+ }
+}
+
+```
+
+### 标签订阅  <a name="sub_index_7"/>
+
+
+描述|内容
+---|---
+接口功能|标签订阅
+请求方法|Post
+请求路径|/garcia/api/server/message/subscribeTags
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+tags|多个标签用英文逗号分割，单个标签20个字符限制，100个标签数量限制 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "pushId": "83a9d4ad369d46eabba3e280366474eb",
+ "tags": [
+ {
+ "tagId": 1,
+ "tagName": "体育"
+ },
+ {
+ "tagId": 2,
+ "tagName": "科技"
+ }
+ ]
+ }
+}
+
+```
+
+### 取消标签订阅  <a name="sub_index_8"/>
+
+
+描述|内容
+---|---
+接口功能|取消标签订阅
+请求方法|Post
+请求路径|/garcia/api/server/message/unSubscribeTags
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+tags|多个标签用英文逗号分割，单个标签20个字符限制，100个标签数量限制 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "pushId": "83a9d4ad369d46eabba3e280366474eb",
+ "tags": [
+ {
+ "tagId": 1,
+ "tagName": "体育"
+ },
+ {
+ "tagId": 2,
+ "tagName": "科技"
+ }
+ ]
+ }
+}
+
+```
+
+### 获取订阅标签  <a name="sub_index_9"/>
+
+
+描述|内容
+---|---
+接口功能|获取订阅标签
+请求方法|Get
+请求路径|/garcia/api/server/message/getSubTags
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|如下
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：返回取消后订阅的标签
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "pushId": "83a9d4ad369d46eabba3e280366474eb",
+ "tags": [
+ {
+ "tagId": 1,
+ "tagName": "体育"
+ },
+ {
+ "tagId": 2,
+ "tagName": "科技"
+ }
+ ]
+ }
+}
+
+```
+
+### 取消订阅所有标签  <a name="sub_index_10"/>
+
+
+描述|内容
+---|---
+接口功能|取消订阅所有标签
+请求方法|Post
+请求路径|/garcia/api/server/message/unSubAllTags
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+pushId|订阅pushID 必填
+sign|签名 必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "redirect": "",
+     "value": true 成功
+}
+
 ```
