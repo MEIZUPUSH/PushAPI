@@ -28,6 +28,7 @@
             * [取消任务推送](#cancelTask_index)
     * [推送统计](#task_statistics_index) 
         * [获取任务推送统计](#getTaskStatistics_index)
+        * [获取应用推送统计](#dailyPushStatics_index)
     * [订阅服务](#sub_index) 
         * [获取订阅开关状态](#sub_index_1)
         * [修改订阅开关状态](#sub_index_2)
@@ -1296,6 +1297,81 @@ sign|签名 必填
 {
     "code": "110032",
     "message": "非法的taskId",
+    "redirect": "",
+    "value": ""
+}
+```
+### 获取应用推送统计 <a name="dailyPushStatics_index"/>
+
+
+描述|内容
+---|---
+接口功能|获取应用推送统计（最长跨度30天）
+请求方法|Get
+请求路径|/garcia/api/server/push/statistics/dailyPushStatics
+请求HOST|api-push.meizu.com
+请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
+备注|签名参数 sign=MD5_SIGN
+请求内容|无
+响应码|200
+响应头|无
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+
+参数|描述
+---|---
+appId|推送应用ID 必填
+startTime|开始日期, 如20140214 必填
+endTime|结束日期, 如20140218 必填
+sign|签名  必填
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "redirect": "",
+    "value": [
+        {
+            "acceptNo": 609,//接收数
+            "clickNo": 30,//点击数
+            "date": "2017-05-03",//推送日期
+            "displayNo": 241,//展示数
+            "pushedNo": 691287,//推送总数
+            "targetNo": 1741833,//推送目标数
+            "validNo": 636257//推送有效数
+        },
+        {
+            "acceptNo": 228,
+            "clickNo": 31,
+            "date": "2017-05-02",
+            "displayNo": 39,
+            "pushedNo": 228463,
+            "targetNo": 879102,
+            "validNo": 210962
+        }
+    ]
+}
+
+```
+
+> 失败情况：
+
+
+```
+{
+    "code": "500",
+    "message": "结束时间不能早于开始时间",
+    "redirect": "",
+    "value": ""
+}
+
+{
+    "code": "500",
+    "message": "开始时间和结束时间不能相差30天以上",
     "redirect": "",
     "value": ""
 }
