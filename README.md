@@ -11,6 +11,9 @@
 
 # 魅族开放平台PUSH系统HTTP接口文档
 
+* [更新日志](https://github.com/MEIZUPUSH/PushAPI/releases)
+
+
 # 目录 <a name="index"/>
 * [一.API接口规范](#api_standard_index)
     * [接口响应规范](#api_resp_index)
@@ -40,6 +43,8 @@
     * [推送统计](#task_statistics_index) 
         * [获取任务推送统计](#getTaskStatistics_index)
         * [获取应用推送统计](#dailyPushStatics_index)
+    * [高级功能](#super_index)
+        * [消息送达与回执](#callback_index)
     * [订阅服务](#sub_index) 
         * [获取订阅开关状态](#sub_index_1)
         * [修改订阅开关状态](#sub_index_2)
@@ -331,7 +336,13 @@ messageJson|Json格式，具体如下必填
             "lights":   闪光 (0关闭  1 开启), 【int 非必填，默认1】
             "sound":   声音 (0关闭  1 开启), 【int 非必填，默认1】
         }
-    }
+    },
+    //需要启用回执，设置extra，无需回执则可不设置
+    "extra":{
+       "callback":"http://flyme.callback",//String(必填字段), 第三方接收回执的Http接口, 最大长度128字节
+       "callback.param":"param",//String(可选字段), 第三方自定义回执参数, 最大长度64字节
+       "callback.type":"3 //int(可选字段), 回执类型(1-送达回执, 2-点击回执, 3-送达与点击回执), 默认3
+   }
 }
 
 ```
@@ -512,7 +523,13 @@ messageJson|Json格式，具体如下必填
             "lights":   闪光 (0关闭  1 开启), 【int 非必填，默认1】
             "sound":   声音 (0关闭  1 开启), 【int 非必填，默认1】
         }
-    }
+    },
+    //需要启用回执，设置extra，无需回执则可不设置
+    "extra":{
+       "callback":"http://flyme.callback",//String(必填字段), 第三方接收回执的Http接口, 最大长度128字节
+       "callback.param":"param",//String(可选字段), 第三方自定义回执参数, 最大长度64字节
+       "callback.type":"3 //int(可选字段), 回执类型(1-送达回执, 2-点击回执, 3-送达与点击回执), 默认3
+   }
 }
 
 ```
@@ -1389,6 +1406,66 @@ sign|签名  必填
 }
 ```
 
+## 高级功能 <a name="super_index"/>
+### 消息送达与回执  <a name="callback_index"/>
+
+- 支持回执接口
+
+[pushId推送接口（通知栏消息）](#VarnishedMessage_push_index)
+
+[别名推送接口（通知栏消息）](#VarnishedMessage_alias_push_index)
+
+
+- 开发者通过设置通知栏消息json格式中增加extra来指定消息的送达和点击回执规则
+
+```
+ "extra":{
+     "callback":"http://flyme.callback",//String(必填字段), 第三方接收回执的Http接口, 最大长度128字节
+     "callback.param":"param",//String(可选字段), 第三方自定义回执参数, 最大长度64字节
+     "callback.type":"3 //int(可选字段), 回执类型(1-送达回执, 2-点击回执, 3-送达与点击回执), 默认3
+ }
+```
+```
+魅族推送服务器每隔1s将已送达或已点击的消息ID和对应设备的pushId或alias通过调用开发者http接口传给开发者(每次调用后, 魅族推送服务器会清空这些数据,下次传给业务方将是新一拨数据)
+
+注: 
+
+消息的送达回执只支持向pushId或alias发送的消息
+
+单个应用注册不同回执地址累计上限不能超过100个
+```
+```
+服务器POST一个JSON数据到callback参数对应的url，格式如下
+
+格式说明: 外层key代表相应的消息msgId, value是一个JSONObject, 包含了下面的参数值
+
+param： 业务上传的自定义参数值
+type： callback类型
+targets： 一批alias或者pushId集合
+```
+
+```
+{
+    "msgId2": {
+        "param": "param2",
+        "type": 2,
+        "targets": [
+            "pushId3",
+            "pushId2",
+            "pushId1"
+        ]
+    },
+    "msgId1": {
+        "param": "param1",
+        "type": 1,
+        "targets": [
+            "alias2",
+            "alias",
+            "alias1"
+        ]
+    }
+}
+```
 ## 订阅服务 <a name="sub_index"/>
 ### 获取订阅开关状态  <a name="sub_index_1"/>
 
