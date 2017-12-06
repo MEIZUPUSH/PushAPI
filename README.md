@@ -316,9 +316,9 @@ messageJson|Json格式，具体如下必填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
-        "url": URI页面地址, 【string clickType为打开URI页面时，必填, 长度限制1000字节】
+        "url": URI页面地址, 【string clickType为打开URI页面时，必填】
         "parameters":参数 【JSON格式】【非必填】 
-        "activity":应用页面地址 【string clickType为打开应用页面时，必填, 长度限制1000字节】
+        "activity":应用页面地址 【string clickType为打开应用页面时，格式 pkg.activity eg: com.meizu.upspushdemo.TestActivity 必填】
         "customAttribute":应用客户端自定义【string clickType为应用客户端自定义时，必填， 输入长度为1000字节以内】
     },
     "pushTimeInfo": {
@@ -504,9 +504,9 @@ messageJson|Json格式，具体如下必填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
-        "url": URI页面地址, 【string clickType为打开URI页面时，必填, 长度限制1000字节】
+        "url": URI页面地址, 【string clickType为打开URI页面时，必填】
         "parameters":参数 【JSON格式】【非必填】 
-        "activity":应用页面地址 【string clickType为打开应用页面时，必填, 长度限制1000字节】
+        "activity":应用页面地址 【string clickType为打开应用页面时，格式 pkg.activity eg: com.meizu.upspushdemo.TestActivity 必填】
         "customAttribute":应用客户端自定义【string clickType为应用客户端自定义时，必填， 输入长度为1000字节以内】
     },
     "pushTimeInfo": {
@@ -624,9 +624,9 @@ messageJson|Json格式，具体如下必填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
-        "url": URI页面地址, 【string clickType为打开URI页面时，必填, 长度限制1000字节】
+        "url": URI页面地址, 【string clickType为打开URI页面时，必填】
         "parameters":参数 【JSON格式】【非必填】 
-        "activity":应用页面地址 【string clickType为打开应用页面时，必填, 长度限制1000字节】
+        "activity":应用页面地址 【string clickType为打开应用页面时，格式 pkg.activity eg: com.meizu.upspushdemo.TestActivity 必填】
         "customAttribute":应用客户端自定义【string clickType为应用客户端自定义时，必填， 输入长度为1000字节以内】
     },
     "pushTimeInfo": {
@@ -1038,9 +1038,9 @@ messageJson|Json格式，具体如下必填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
-        "url": URI页面地址, 【string clickType为打开URI页面时，必填, 长度限制1000字节】
+        "url": URI页面地址, 【string clickType为打开URI页面时，必填】
         "parameters":参数 【JSON格式】【非必填】 
-        "activity":应用页面地址 【string clickType为打开应用页面时，必填, 长度限制1000字节】
+        "activity":应用页面地址 【string clickType为打开应用页面时，格式 pkg.activity eg: com.meizu.upspushdemo.TestActivity 必填】
         "customAttribute":应用客户端自定义【string clickType为应用客户端自定义时，必填， 输入长度为1000字节以内】
     },
     "pushTimeInfo": {
@@ -1146,9 +1146,9 @@ messageJson|Json格式，具体如下必填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
-        "url": URI页面地址, 【string clickType为打开URI页面时，必填, 长度限制1000字节】
+        "url": URI页面地址, 【string clickType为打开URI页面时，必填】
         "parameters":参数 【JSON格式】【非必填】 
-        "activity":应用页面地址 【string clickType为打开应用页面时，必填, 长度限制1000字节】
+        "activity":应用页面地址 【string clickType为打开应用页面时，格式 pkg.activity eg: com.meizu.upspushdemo.TestActivity 必填】
         "customAttribute":应用客户端自定义【string clickType为应用客户端自定义时，必填， 输入长度为1000字节以内】
     },
     "pushTimeInfo": {
