@@ -1,63 +1,34 @@
-# 透传限制说明
-  * 为优化flyme系统整体功耗，推送平台决定本周五 **(6月16号)** 起限制透传消息推送的使用，不排除关闭透传推送类型。使用透传推送的业务请尽快切换到通知栏推送，以避免消息推送失败。新接入的应用请使用通知栏推送
- 
-  * 受影响的接口及功能：
-   1. pushId推送接口（透传消息）
-   2. 别名推送接口（透传消息)
-   3. 获取taskId的透传推送(getTaskId)
-   4. 应用全部推送（透传消息)
-   5. 应用标签推送（透传消息)
-   6. 在平台上进行的透传推送
-
 # 魅族开放平台PUSH系统HTTP接口文档
 
 * [更新日志](https://github.com/MEIZUPUSH/PushAPI/releases)
 
+## 停用clickType=3说明
 
-# 目录 <a name="index"/>
-* [一.API接口规范](#api_standard_index)
-    * [接口响应规范](#api_resp_index)
-    * [接口签名规范](#api_sign_index)
-    * [接口请求示例](#api_demo_index)
-* [二.API说明](#api_common_index) 
-    * [前言](#preface_index)      
-    * [非任务推送](#untask_push_index)  
-        * [应用场景](#yycj_1_index)
-        * [pushId推送接口（透传消息）](#UnVarnishedMessage_push_index)
-        * [pushId推送接口（通知栏消息）](#VarnishedMessage_push_index)
-        * [别名推送接口（透传消息）](#UnVarnishedMessage_alias_push_index)
-        * [别名推送接口（通知栏消息）](#VarnishedMessage_alias_push_index)
-    * [任务推送](#task_push_index)  
-        * [非调度推送](#pushId_index)
-            * [应用场景](#yycj_2_index)
-            * [获取推送taskId](#getTaskId_index)
-            * [pushId推送接口（透传消息）](#UnVarnishedMessage_task_push_index)
-            * [pushId推送接口（通知栏消息）](#VarnishedMessage_task_push_index)
-            * [别名推送接口（透传消息）](#UnVarnishedMessage_alias_task_push_index)
-            * [别名推送接口（通知栏消息）](#VarnishedMessage_alias_task_push_index)
-        * [调度推送](#all_tag_push_index)
-            * [应用场景](#yycj_3_index)
-            * [应用全部推送](#pushToApp_index)
-            * [应用标签推送](#pushToTag_index)
-            * [取消任务推送](#cancelTask_index)
-    * [推送统计](#task_statistics_index) 
-        * [获取任务推送统计](#getTaskStatistics_index)
-        * [获取应用推送统计](#dailyPushStatics_index)
-    * [高级功能](#super_index)
-        * [消息送达与回执](#callback_index)
-    * [订阅服务](#sub_index) 
-        * [获取订阅开关状态](#sub_index_1)
-        * [修改订阅开关状态](#sub_index_2)
-        * [修改所有开关状态](#sub_index_3)
-        * [别名订阅](#sub_index_4)
-        * [取消别名订阅](#sub_index_5)
-        * [获取订阅别名](#sub_index_6)
-        * [标签订阅](#sub_index_7)
-        * [取消标签订阅](#sub_index_8)
-        * [获取订阅标签](#sub_index_9)
-        * [取消订阅所有标签](#sub_index_10)
-# API接口规范 <a name="api_standard_index"/>
-## 接口响应规范 <a name="api_resp_index"/>
+由于安卓12后兼容问题，请各应用在使用api推送通知栏类型消息时，不要使用clickType=3(应用客户端自定义)的方式；改为以下合适自身业务需求的方式：
+
+0、“打开应用”；
+
+1、“打开应用页面”；
+
+2、“打开H5地址（应用本地的URI）”。
+
+## 透传限制说明
+
+  * 为优化flyme系统整体功耗，推送平台从**2018年6月16号** 起限制透传消息推送的使用，不排除关闭透传推送类型。使用透传推送的业务请尽快切换到通知栏推送，以避免消息推送失败。新接入的应用请使用通知栏推送
+
+  * 受影响的接口及功能：
+
+    1. pushId推送接口（透传消息）
+    2. 别名推送接口（透传消息)
+    3. 获取taskId的透传推送(getTaskId)
+    4. 应用全部推送（透传消息)
+    5. 应用标签推送（透传消息)
+    6. 在平台上进行的透传推送
+
+# API接口规范 
+
+## 接口响应规范 
+
 > HTTP接口遵循魅族API协议规范。返回数据格式统一如下：
 
 
@@ -70,36 +41,38 @@
     “msgId”: ”“//可选，消息推送msgId
 }
 ```
+
 > Api returnCode定义
 
 
-code|value
----|---
-200|正常
-500|其他异常
-1001|系统错误
-1003|服务器忙
-1005|参数错误，请参考API文档
-1006|签名认证失败
-110000|appId不合法
-110001|appKey不合法
-110004|参数不能为空
-110009|应用被加入黑名单
-110010|应用推送速率过快
-110053|透传超过限制
+| code   | value                   |
+| ------ | ----------------------- |
+| 200    | 正常                    |
+| 500    | 其他异常                |
+| 1001   | 系统错误                |
+| 1003   | 服务器忙                |
+| 1005   | 参数错误，请参考API文档 |
+| 1006   | 签名认证失败            |
+| 110000 | appId不合法             |
+| 110001 | appKey不合法            |
+| 110004 | 参数不能为空            |
+| 110009 | 应用被加入黑名单        |
+| 110010 | 应用推送速率过快        |
+| 110053 | 透传超过限制            |
 
 
-## 接口签名规范 <a name="api_sign_index"/>
+## 接口签名规范 
+
 > 请求参数分别是“k1”、“k2”、“k3”，它们的值分别是“v1”、“v2”、“v3”，计算方法如下所示：
-> 
+>
 > 1. 将参数以其参数名的字典序升序进行排序,如 对 k1 k2 k3 排序
 > 1. 遍历排序后的字典，将所有参数按"key=value"格式拼接在一起，如“k1=v1k2=v2k3=v3”
 > 1. 在拼接好的字符串末尾追加上应用的Secret Key
-> 
+>
 > 上述字符串的MD5值即为签名的值。（32位小写）
-> 
+>
 > 将签名值放在请求的参数中例如sign=MD5_SIGN
-> 
+>
 > 服务端SDK调用API的应用的私钥Secret Key为 appSecret
 
 ```java
@@ -140,7 +113,8 @@ code|value
     //MD5摘要 sign为
     ac076ff25d9900015a681cb5172aa53b
 ```
-## 接口请求示例 <a name="api_demo_index"/>
+
+## 接口请求示例 
 
 ```
 POST http://server-api-push.meizu.com/garcia/api/server/push/unvarnished/pushByAlias HTTP/1.1
@@ -172,137 +146,59 @@ Expires: Thu, 01 Jan 1970 00:00:00 GMT
 
 
 
-# API说明 <a name="api_common_index"/>
+# API说明 
 
-## 前言 <a name="preface_index"/>
+## 前言 
 
 > 消息推送结果接口响应部分value是map集合的json格式且只返回推送非法的pushId，合法的pushId不予返回，一般情况下，pushId未注册则视为非法。
 
 map部分code定义
 
-code|value
----|---
-201|没有权限，服务器主动拒绝
-501|推送消息失败（db_error）
-513|推送消息失败
-519|推送消息失败服务过载
-520|消息折叠（1分钟内同一设备同一应用消息收到多次，默认5次）
-110002|pushId失效(pushId未订阅)
-110003|pushId非法
-110005|alias失效(alias未订阅或者消息开关关闭)
-110010|pushId失效(消息开关关闭)
+| code   | value                                                    |
+| ------ | -------------------------------------------------------- |
+| 201    | 没有权限，服务器主动拒绝                                 |
+| 501    | 推送消息失败（db_error）                                 |
+| 513    | 推送消息失败                                             |
+| 519    | 推送消息失败服务过载                                     |
+| 520    | 消息折叠（1分钟内同一设备同一应用消息收到多次，默认5次） |
+| 110002 | pushId失效(pushId未订阅)                                 |
+| 110003 | pushId非法                                               |
+| 110005 | alias失效(alias未订阅或者消息开关关闭)                   |
+| 110010 | pushId失效(消息开关关闭)                                 |
 
 **注：平台使用pushId来标识每个独立的用户，每一台终端上每一个app拥有一个独立的pushId**
 
-## 非任务推送 <a name="untask_push_index"/>
-### 应用场景 <a name="yycj_1_index"/>
+## 非任务推送 
+
+### 应用场景 
 
 > 场景1：查找手机业务需要远程定位位置，可发送消息指令到对应的设备
-> 
+>
 > 场景2：社区用户回帖消息提醒，用户对发表的帖子有最新回复时，消息提醒发帖者
 
 
-### pushId推送接口（透传消息） <a name="UnVarnishedMessage_push_index"/>
 
-描述|内容
----|---
-接口功能|根据pushId推送
-请求方法|Post
-请求路径|/garcia/api/server/push/unvarnished/pushByPushId
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+### pushId推送接口（通知栏消息） 
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushIds|推送设备，一批最多不能超过1000个 多个英文逗号分割必填
-sign|签名 必填
-messageJson|Json格式，具体如下必填
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据pushId推送                                               |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/varnished/pushByPushId               |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-```
-{
-    "title": 推送标题, 【string 非必填，字数显示1~32个】
-    "content": 推送内容,  【string 必填，字数限制2000以内】
-    "pushTimeInfo": {
-        "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
-        "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
-    }
-}
-```
-
-响应内容
-
-> 成功情况：
-
-```
-{
-    "code": "200",
-    "message": "",
-    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-    "value": {}
-}
-```
-
-> 失败情况
-
-
-```
-{
-    "code": "200",
-    "message": "",
-    "value": {
-        "110002": [
-            "J0476035d625e6c64567f71487e040e7d017f0558675b",
-            "J0476045d625e6c64567f71487e040e7d017f0558675b",
-            "J0476035d625e6sd64567f71487e040e7d017f0558675b"
-        ],
-        "110003": [
-            "J0476035d625e6c64567f714567e040e7d017f0558675b"
-        ]
-    },
-    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-}
-```
-
-> 超速情况
-
-```
-{
-    "code": "110010",
-    "message": "应用请求频率超过限制",
-    "value": "",
-    "redirect": ""
-}
-```
-
-
-
-### pushId推送接口（通知栏消息） <a name="VarnishedMessage_push_index"/>
-
-描述|内容
----|---
-接口功能|根据pushId推送
-请求方法|Post
-请求路径|/garcia/api/server/push/varnished/pushByPushId
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
-
-参数|描述
----|---
-appId|推送应用ID 必填
-pushIds|推送设备，一批最多不能超过1000个 多个英文逗号分割必填
-sign|签名 必填
-messageJson|Json格式，具体如下必填
+| 参数        | 描述                                                 |
+| ----------- | ---------------------------------------------------- |
+| appId       | 推送应用ID 必填                                      |
+| pushIds     | 推送设备，一批最多不能超过100个 多个英文逗号分割必填 |
+| sign        | 签名 必填                                            |
+| messageJson | Json格式，具体如下必填                               |
 
 ```
 {
@@ -395,102 +291,28 @@ messageJson|Json格式，具体如下必填
 }
 ```
 
-### 别名推送接口（透传消息） <a name="UnVarnishedMessage_alias_push_index"/>
 
-描述|内容
----|---
-接口功能|根据别名推送
-请求方法|Post
-请求路径|/garcia/api/server/push/unvarnished/pushByAlias
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+### 别名推送接口（通知栏消息）
 
-参数|描述
----|---
-appId|推送应用ID 必填
-alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
-sign|签名 必填
-messageJson|Json格式，具体如下必填
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据别名推送                                                 |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/varnished/pushByAlias                |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-```
-{
-    "title": 推送标题, 【string 非必填，字数显示1~32个字符】
-    "content": 推送内容,  【string 必填，字数限制2000字节以内】
-    "pushTimeInfo": {
-        "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
-        "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
-    }
-}
-```
-
-响应内容
-
-> 成功情况：
-
-```
-{
-    "code": "200",
-    "message": "",
-    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-    "value": {}
-}
-```
-
-> 失败情况
-
-
-```
-{
-    "code": "200",
-    "message": "",
-    "value": {
-        "110005": [
-            "alias1",
-            "alias2"
-        ]
-    },
-   "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-}
-```
-
-> 超速情况
-
-```
-{
-    "code": "110010",
-    "message": "应用请求频率超过限制",
-    "value": "",
-    "redirect": ""
-}
-```
-
-
-### 别名推送接口（通知栏消息） <a name="VarnishedMessage_alias_push_index"/>
-
-描述|内容
----|---
-接口功能|根据别名推送
-请求方法|Post
-请求路径|/garcia/api/server/push/varnished/pushByAlias
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
-
-参数|描述
----|---
-appId|推送应用ID 必填
-alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
-sign|签名 必填
-messageJson|Json格式，具体如下必填
+| 参数        | 描述                                                 |
+| ----------- | ---------------------------------------------------- |
+| appId       | 推送应用ID 必填                                      |
+| alias       | 推送别名，一批最多不能超过100个 多个英文逗号分割必填 |
+| sign        | 签名 必填                                            |
+| messageJson | Json格式，具体如下必填                               |
 
 ```
 {
@@ -581,33 +403,35 @@ messageJson|Json格式，具体如下必填
 
 
 
-## 任务推送 <a name="task_push_index"/>
-### pushId推送 <a name="pushId_index"/>
-#### 应用场景 <a name="yycj_2_index"/>
+## 任务推送 
+
+### pushId推送 
+
+#### 应用场景 
 
 > 场景1：浏览器对指定的某一大批量pushId用户推送活动或者新闻消息，通过先获取taskId，然后通过taskId批量推送，推送过程中可以根据taskId时时获取推送统计结果
 
-#### 获取推送taskId <a name="getTaskId_index"/>
+#### 获取推送taskId 
 
-描述|内容
----|---
-接口功能|获取推送taskId
-请求方法|Post
-请求路径|/garcia/api/server/push/pushTask/getTaskId
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 获取推送taskId                                               |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/pushTask/getTaskId                   |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushType|消息类型 0 通知栏 1透传 必填
-sign|签名 必填
-messageJson|Json格式，具体如下必填
+| 参数        | 描述                         |
+| ----------- | ---------------------------- |
+| appId       | 推送应用ID 必填              |
+| pushType    | 消息类型 0 通知栏 1透传 必填 |
+| sign        | 签名 必填                    |
+| messageJson | Json格式，具体如下必填       |
 
 > 通知栏类型（pushType=0）  
 
@@ -682,107 +506,27 @@ messageJson|Json格式，具体如下必填
 }
 ```
 
+#### pushId推送接口（通知栏消息） 
 
-#### pushId推送接口（透传消息） <a name="UnVarnishedMessage_task_push_index"/>
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据pushId推送                                               |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/task/varnished/pushByPushId          |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-描述|内容
----|---
-接口功能|根据pushId推送
-请求方法|Post
-请求路径|/garcia/api/server/push/task/unvarnished/pushByPushId
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
-
-参数|描述
----|---
-taskId|推送任务ID 必填 
-appId|推送应用ID 必填
-pushIds|推送设备，多个英文逗号分割必填
-sign|签名 必填
-
-
-响应内容
-
-> 成功情况：
-
-```
-{
-    "code": "200",
-    "message": "",
-    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-    "value": {}
-}
-```
-
-> 失败情况
-
-
-```
-{
-    "code": "110032",
-    "message": "非法的taskId",
-    "redirect": "",
-    "value": ""
-}
-```
-
-
-```
-{
-    "code": "200",
-    "message": "",
-    "value": {
-        "110002": [
-            "J0476035d625e6c64567f71487e040e7d017f0558675b",
-            "J0476045d625e6c64567f71487e040e7d017f0558675b",
-            "J0476035d625e6sd64567f71487e040e7d017f0558675b"
-        ],
-        "110003": [
-            "J0476035d625e6c64567f714567e040e7d017f0558675b"
-        ]
-    },
-    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-}
-```
-
-
-> 超速情况
-
-```
-{
-    "code": "110010",
-    "message": "应用请求频率超过限制",
-    "value": "",
-    "redirect": ""
-}
-```
-
-#### pushId推送接口（通知栏消息） <a name="VarnishedMessage_task_push_index"/>
-
-描述|内容
----|---
-接口功能|根据pushId推送
-请求方法|Post
-请求路径|/garcia/api/server/push/task/varnished/pushByPushId
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
-
-参数|描述
----|---
-taskId|推送任务ID 必填 
-appId|推送应用ID 必填
-pushIds|推送设备，一批最多不能超过1000个 多个英文逗号分割必填
-sign|签名 必填
+| 参数    | 描述                                                 |
+| ------- | ---------------------------------------------------- |
+| taskId  | 推送任务ID 必填                                      |
+| appId   | 推送应用ID 必填                                      |
+| pushIds | 推送设备，一批最多不能超过100个 多个英文逗号分割必填 |
+| sign    | 签名 必填                                            |
 
 
 响应内容
@@ -841,102 +585,29 @@ sign|签名 必填
 }
 ```
 
-#### 别名推送接口（透传消息） <a name="UnVarnishedMessage_alias_task_push_index"/>
+### 别名推送
 
-描述|内容
----|---
-接口功能|根据别名推送
-请求方法|Post
-请求路径|/garcia/api/server/push/task/unvarnished/pushByAlias
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+#### 别名推送接口（通知栏消息）
 
-参数|描述
----|---
-taskId|推送任务ID 必填 
-appId|推送应用ID 必填
-alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
-sign|签名 必填
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据别名推送                                                 |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/task/varnished/pushByAlias           |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-
-响应内容
-
-> 成功情况：
-
-```
-{
-    "code": "200",
-    "message": "",
-    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-    "value": {}
-}
-```
-
-> 失败情况
-
-
-```
-{
-    "code": "110032",
-    "message": "非法的taskId",
-    "redirect": "",
-    "value": ""
-}
-```
-
-
-```
-{
-    "code": "200",
-    "message": "",
-    "value": {
-        "110005": [
-            "alias1",
-            "alias2"
-        ]
-    },
-    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
-}
-```
-
-
-> 超速情况
-
-```
-{
-    "code": "110010",
-    "message": "应用请求频率超过限制",
-    "value": "",
-    "redirect": ""
-}
-```
-
-#### 别名推送接口（通知栏消息） <a name="VarnishedMessage_alias_task_push_index"/>
-
-描述|内容
----|---
-接口功能|根据别名推送
-请求方法|Post
-请求路径|/garcia/api/server/push/task/varnished/pushByAlias
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
-
-参数|描述
----|---
-taskId|推送任务ID 必填 
-appId|推送应用ID 必填
-alias|推送别名，一批最多不能超过1000个 多个英文逗号分割必填
-sign|签名 必填
+| 参数   | 描述                                                 |
+| ------ | ---------------------------------------------------- |
+| taskId | 推送任务ID 必填                                      |
+| appId  | 推送应用ID 必填                                      |
+| alias  | 推送别名，一批最多不能超过100个 多个英文逗号分割必填 |
+| sign   | 签名 必填                                            |
 
 
 响应内容
@@ -992,8 +663,9 @@ sign|签名 必填
 ```
 
 
-### 全部&标签推送 <a name="all_tag_push_index"/>
-#### 应用场景 <a name="yycj_3_index"/>
+### 全部&标签推送 
+
+#### 应用场景 
 
 > 全部推送：音乐中心搞一个全网活动，需要对所有安装此应用的用户推送消息
 
@@ -1001,9 +673,8 @@ sign|签名 必填
 > 户感兴趣的内容。订阅了娱乐的推送娱乐新闻，订阅了美食的推送美食信息
 
 
-#### 应用全部推送 <a name="pushToApp_index"/>
+#### 应用全部推送 
 
-描述|内容
 ---|---
 接口功能|全部用户推送
 请求方法|Post
@@ -1016,12 +687,12 @@ sign|签名 必填
 响应头|无
 请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushType|消息类型 0 通知栏 1透传 必填
-sign|签名 必填
-messageJson|Json格式，具体如下必填
+| 参数        | 描述                             |
+| ----------- | -------------------------------- |
+| appId       | 推送应用ID 必填                  |
+| pushType    | 消息类型 0 通知栏 ~~1透传~~ 必填 |
+| sign        | 签名 必填                        |
+| messageJson | Json格式，具体如下必填           |
 
 > 通知栏类型（pushType=0）  
 
@@ -1067,27 +738,6 @@ messageJson|Json格式，具体如下必填
 
 ```
 
-> 透传类型（pushType=1） 
-
-
-```
-{
-    "title": 推送标题, 【string 必填，字数显示1~32个字符】
-    "content": 推送内容,  【string 必填，字数限制2000字节以内】
-    "pushTimeInfo": {
-        "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
-        "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
-        "pushTimeType": 定时推送 (0, "即时"),(1, "定时")【必填，默认0】
-        "startTime": 任务定时开始时间(yyyy-MM-dd HH:mm:ss) 【非必填pushTimeType为1必填】
-    },
-    "advanceInfo": {
-        "fixSpeed": 是否定速推送 0 否  1 是 (fixSpeedRate 定速速率) 【非必填】
-        "fixSpeedRate": 定速速率 【fixSpeed为1时，必填】
-    }
-}
-
-```
-
 响应内容
 
 > 成功情况：
@@ -1107,29 +757,29 @@ messageJson|Json格式，具体如下必填
 
 ```
 
-#### 应用标签推送 <a name="pushToTag_index"/>
+#### 应用标签推送 
 
-描述|内容
----|---
-接口功能|应用标签推送
-请求方法|Post
-请求路径|/garcia/api/server/push/pushTask/pushToTag
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 应用标签推送                                                 |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/pushTask/pushToTag                   |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushType|消息类型 0 通知栏 1透传 必填
-tagNames|推送标签 必填 多个通过英文逗号分割
-scope|标签集合 必填 0 并集 1 交集
-sign|签名 必填
-messageJson|Json格式，具体如下必填
+| 参数        | 描述                               |
+| ----------- | ---------------------------------- |
+| appId       | 推送应用ID 必填                    |
+| pushType    | 消息类型 0 通知栏 1透传 必填       |
+| tagNames    | 推送标签 必填 多个通过英文逗号分割 |
+| scope       | 标签集合 必填 0 并集 1 交集        |
+| sign        | 签名 必填                          |
+| messageJson | Json格式，具体如下必填             |
 
 > 通知栏类型（pushType=0）  
 
@@ -1178,28 +828,6 @@ messageJson|Json格式，具体如下必填
 
 ```
 
-> 透传类型（pushType=1） 
-
-
-```
-{
-    "title": 推送标题, 【string 必填，字数显示1~32个字符】
-    "content": 推送内容,  【string 必填，字数限制2000字节以内】
-    "pushTimeInfo": {
-        "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
-        "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
-        "pushTimeType": 定时推送 (0, "即时"),(1, "定时")【必填，默认0】
-        "startTime": 任务定时开始时间(yyyy-MM-dd HH:mm:ss) 【非必填pushTimeType为1必填】
-    },
-    "advanceInfo": {
-        "fixSpeed": 是否定速推送 0 否  1 是 (fixSpeedRate 定速速率) 【非必填】
-        "fixSpeedRate": 定速速率 【fixSpeed为1时，必填】
-    }
-}
-
-
-```
-
 响应内容
 
 > 成功情况：
@@ -1222,28 +850,28 @@ messageJson|Json格式，具体如下必填
 
 
 
-#### 取消任务推送 <a name="cancelTask_index"/>
+#### 取消任务推送 
 
 
-描述|内容
----|---
-接口功能|取消任务推送（只针对全部用户推送待推送和推送中的任务取消）
-请求方法|Post
-请求路径|/garcia/api/server/push/pushTask/cancel
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 取消任务推送（只针对全部用户推送待推送和推送中的任务取消）   |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/pushTask/cancel                      |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushType|消息类型 0 通知栏 1透传 必填
-taskId|取消任务ID
-sign|签名 必填
+| 参数     | 描述                         |
+| -------- | ---------------------------- |
+| appId    | 推送应用ID 必填              |
+| pushType | 消息类型 0 通知栏 1透传 必填 |
+| taskId   | 取消任务ID                   |
+| sign     | 签名 必填                    |
 
 
 响应内容
@@ -1279,28 +907,30 @@ sign|签名 必填
     "value": ""
 }
 ```
-## 推送统计 <a name="task_statistics_index"/>
-### 获取任务推送统计 <a name="getTaskStatistics_index"/>
+
+## 推送统计 
+
+### 获取任务推送统计 
 
 
-描述|内容
----|---
-接口功能|获取任务推送统
-请求方法|Get
-请求路径|/garcia/api/server/push/statistics/getTaskStatistics
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 获取任务推送统                                               |
+| 请求方法 | Get                                                          |
+| 请求路径 | /garcia/api/server/push/statistics/getTaskStatistics         |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-taskId|任务ID
-sign|签名 必填
+| 参数   | 描述            |
+| ------ | --------------- |
+| appId  | 推送应用ID 必填 |
+| taskId | 任务ID          |
+| sign   | 签名 必填       |
 
 
 响应内容
@@ -1336,28 +966,29 @@ sign|签名 必填
     "value": ""
 }
 ```
-### 获取应用推送统计 <a name="dailyPushStatics_index"/>
+
+### 获取应用推送统计 
 
 
-描述|内容
----|---
-接口功能|获取应用推送统计（最长跨度30天）
-请求方法|Get
-请求路径|/garcia/api/server/push/statistics/dailyPushStatics
-请求HOST|server-api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 获取应用推送统计（最长跨度30天）                             |
+| 请求方法 | Get                                                          |
+| 请求路径 | /garcia/api/server/push/statistics/dailyPushStatics          |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-startTime|开始日期, 如20140214 必填
-endTime|结束日期, 如20140218 必填
-sign|签名  必填
+| 参数      | 描述                      |
+| --------- | ------------------------- |
+| appId     | 推送应用ID 必填           |
+| startTime | 开始日期, 如20140214 必填 |
+| endTime   | 结束日期, 如20140218 必填 |
+| sign      | 签名  必填                |
 
 
 响应内容
@@ -1412,8 +1043,9 @@ sign|签名  必填
 }
 ```
 
-## 高级功能 <a name="super_index"/>
-### 消息送达与回执  <a name="callback_index"/>
+## 高级功能 
+
+### 消息送达与回执  
 
 - 支持回执接口
 
@@ -1432,6 +1064,7 @@ sign|签名  必填
      "callback.type":"3 //int(可选字段), 回执类型(1-送达回执, 2-点击回执, 3-送达与点击回执), 默认3
  }
 ```
+
 ```
 魅族推送服务器每隔1s将已送达或已点击的消息ID和对应设备的pushId或alias通过调用开发者http接口传给开发者(每次调用后, 魅族推送服务器会清空这些数据,下次传给业务方将是新一拨数据)
 
@@ -1444,10 +1077,10 @@ sign|签名  必填
 
 - 回执响应内容
 
-key|value
----|---
-cb|回执明细内容 如下所述（Json数据）
-access_token|回执接口访问令牌
+| key          | value                             |
+| ------------ | --------------------------------- |
+| cb           | 回执明细内容 如下所述（Json数据） |
+| access_token | 回执接口访问令牌                  |
 
 ```
 回执明细格式说明: 外层key代表相应的消息id和回执类型（msgId-type）, value是一个JSONObject, 包含了下面的参数值
@@ -1479,28 +1112,30 @@ targets： 一批alias或者pushId集合
     }
 }
 ```
-## 订阅服务 <a name="sub_index"/>
-### 获取订阅开关状态  <a name="sub_index_1"/>
+
+## 订阅服务
+
+### 获取订阅开关状态 
 
 
-描述|内容
----|---
-接口功能|获取订阅开关状态
-请求方法|Get
-请求路径|/garcia/api/server/message/getRegisterSwitch
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|如下
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 获取订阅开关状态                                             |
+| 请求方法 | Get                                                          |
+| 请求路径 | /garcia/api/server/message/getRegisterSwitch                 |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 如下                                                         |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-sign|签名 必填
+| 参数   | 描述            |
+| ------ | --------------- |
+| appId  | 推送应用ID 必填 |
+| pushId | 订阅pushID 必填 |
+| sign   | 签名 必填       |
 
 
 响应内容
@@ -1520,71 +1155,29 @@ sign|签名 必填
 
 ```
 
-### 修改订阅开关状态 <a name="sub_index_2"/>
+### 修改订阅开关状态 
 
 
-描述|内容
----|---
-接口功能|修改订阅开关状态
-请求方法|Post
-请求路径|/garcia/api/server/message/changeRegisterSwitch
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 修改订阅开关状态                                             |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/message/changeRegisterSwitch              |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-msgType|int 类型 (0,"状态栏推送"),(1,"透传消息"); 必填
-subSwitch|开关状态 0 关 1 开 必填
-sign|签名 必填
-
-
-响应内容
-
-> 成功情况：
-
-```
-{
- "code": "200",
- "message": "",
- "redirect": "",
- "value": {
- "barTypeSwitch": int 类型 通知栏消息开关 0 关 1 开,
- "directTypeSwitch":int 类型 透传消息开关 0 关 1 开,
- "pushId": string 类型 注册 push 后唯一标识
- }
-}
-
-```
-
-### 修改所有开关状态  <a name="sub_index_3"/>
-
-
-描述|内容
----|---
-接口功能|修改所有开关状态
-请求方法|Post
-请求路径|/garcia/api/server/message/changeAllSwitch
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
-
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-subSwitch|开关状态 0 关 1 开 必填
-sign|签名 必填
+| 参数      | 描述                                           |
+| --------- | ---------------------------------------------- |
+| appId     | 推送应用ID 必填                                |
+| pushId    | 订阅pushID 必填                                |
+| msgType   | int 类型 (0,"状态栏推送"),(1,"透传消息"); 必填 |
+| subSwitch | 开关状态 0 关 1 开 必填                        |
+| sign      | 签名 必填                                      |
 
 
 响应内容
@@ -1605,28 +1198,70 @@ sign|签名 必填
 
 ```
 
-### 别名订阅  <a name="sub_index_4"/>
+### 修改所有开关状态  
 
 
-描述|内容
----|---
-接口功能|别名订阅
-请求方法|Post
-请求路径|/garcia/api/server/message/subscribeAlias
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 修改所有开关状态                                             |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/message/changeAllSwitch                   |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-alias|订阅别名（60字符限制）必填
-sign|签名 必填
+| 参数      | 描述                    |
+| --------- | ----------------------- |
+| appId     | 推送应用ID 必填         |
+| pushId    | 订阅pushID 必填         |
+| subSwitch | 开关状态 0 关 1 开 必填 |
+| sign      | 签名 必填               |
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "barTypeSwitch": int 类型 通知栏消息开关 0 关 1 开,
+ "directTypeSwitch":int 类型 透传消息开关 0 关 1 开,
+ "pushId": string 类型 注册 push 后唯一标识
+ }
+}
+
+```
+
+### 别名订阅 
+
+
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 别名订阅                                                     |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/message/subscribeAlias                    |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
+
+| 参数   | 描述                       |
+| ------ | -------------------------- |
+| appId  | 推送应用ID 必填            |
+| pushId | 订阅pushID 必填            |
+| alias  | 订阅别名（60字符限制）必填 |
+| sign   | 签名 必填                  |
 
 
 响应内容
@@ -1646,67 +1281,27 @@ sign|签名 必填
 
 ```
 
-### 取消别名订阅  <a name="sub_index_5"/>
+### 取消别名订阅 
 
 
-描述|内容
----|---
-接口功能|取消别名订阅
-请求方法|Post
-请求路径|/garcia/api/server/message/unSubscribeAlias
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 取消别名订阅                                                 |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/message/unSubscribeAlias                  |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-sign|签名 必填
-
-
-响应内容
-
-> 成功情况：
-
-```
-{
- "code": "200",
- "message": "",
- "redirect": "",
- "value": {
- "pushId": string 类型 注册 push 后唯一标识
- “alias”: string 类型
- }
-}
-
-```
-
-### 获取订阅别名  <a name="sub_index_6"/>
-
-
-描述|内容
----|---
-接口功能|获取订阅别名
-请求方法|Get
-请求路径|/garcia/api/server/message/getSubAlias
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|如下
-
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-sign|签名 必填
+| 参数   | 描述            |
+| ------ | --------------- |
+| appId  | 推送应用ID 必填 |
+| pushId | 订阅pushID 必填 |
+| sign   | 签名 必填       |
 
 
 响应内容
@@ -1726,28 +1321,67 @@ sign|签名 必填
 
 ```
 
-### 标签订阅  <a name="sub_index_7"/>
+### 获取订阅别名  
+
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 获取订阅别名                                                 |
+| 请求方法 | Get                                                          |
+| 请求路径 | /garcia/api/server/message/getSubAlias                       |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 如下                                                         |
+
+| 参数   | 描述            |
+| ------ | --------------- |
+| appId  | 推送应用ID 必填 |
+| pushId | 订阅pushID 必填 |
+| sign   | 签名 必填       |
 
 
-描述|内容
----|---
-接口功能|标签订阅
-请求方法|Post
-请求路径|/garcia/api/server/message/subscribeTags
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+响应内容
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-tags|多个标签用英文逗号分割，单个标签20个字符限制，100个标签数量限制 必填
-sign|签名 必填
+> 成功情况：
+
+```
+{
+ "code": "200",
+ "message": "",
+ "redirect": "",
+ "value": {
+ "pushId": string 类型 注册 push 后唯一标识
+ “alias”: string 类型
+ }
+}
+
+```
+
+### 标签订阅  
+
+
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 标签订阅                                                     |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/message/subscribeTags                     |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
+
+| 参数   | 描述                                                         |
+| ------ | ------------------------------------------------------------ |
+| appId  | 推送应用ID 必填                                              |
+| pushId | 订阅pushID 必填                                              |
+| tags   | 多个标签用英文逗号分割，单个标签20个字符限制，100个标签数量限制 必填 |
+| sign   | 签名 必填                                                    |
 
 
 响应内容
@@ -1776,28 +1410,28 @@ sign|签名 必填
 
 ```
 
-### 取消标签订阅  <a name="sub_index_8"/>
+### 取消标签订阅  
 
 
-描述|内容
----|---
-接口功能|取消标签订阅
-请求方法|Post
-请求路径|/garcia/api/server/message/unSubscribeTags
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 取消标签订阅                                                 |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/message/unSubscribeTags                   |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-tags|多个标签用英文逗号分割，单个标签20个字符限制，100个标签数量限制 必填
-sign|签名 必填
+| 参数   | 描述                                                         |
+| ------ | ------------------------------------------------------------ |
+| appId  | 推送应用ID 必填                                              |
+| pushId | 订阅pushID 必填                                              |
+| tags   | 多个标签用英文逗号分割，单个标签20个字符限制，100个标签数量限制 必填 |
+| sign   | 签名 必填                                                    |
 
 
 响应内容
@@ -1826,27 +1460,27 @@ sign|签名 必填
 
 ```
 
-### 获取订阅标签  <a name="sub_index_9"/>
+### 获取订阅标签  
 
 
-描述|内容
----|---
-接口功能|获取订阅标签
-请求方法|Get
-请求路径|/garcia/api/server/message/getSubTags
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|如下
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 获取订阅标签                                                 |
+| 请求方法 | Get                                                          |
+| 请求路径 | /garcia/api/server/message/getSubTags                        |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 如下                                                         |
 
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-sign|签名 必填
+| 参数   | 描述            |
+| ------ | --------------- |
+| appId  | 推送应用ID 必填 |
+| pushId | 订阅pushID 必填 |
+| sign   | 签名 必填       |
 
 
 响应内容
@@ -1875,27 +1509,26 @@ sign|签名 必填
 
 ```
 
-### 取消订阅所有标签  <a name="sub_index_10"/>
+### 取消订阅所有标签 
 
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 取消订阅所有标签                                             |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/message/unSubAllTags                      |
+| 请求HOST | api-push.meizu.com                                           |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
 
-描述|内容
----|---
-接口功能|取消订阅所有标签
-请求方法|Post
-请求路径|/garcia/api/server/message/unSubAllTags
-请求HOST|api-push.meizu.com
-请求头|Content-Type:application/x-www-form-urlencoded;charset=UTF-8
-备注|签名参数 sign=MD5_SIGN
-请求内容|无
-响应码|200
-响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
-
-参数|描述
----|---
-appId|推送应用ID 必填
-pushId|订阅pushID 必填
-sign|签名 必填
+| 参数   | 描述            |
+| ------ | --------------- |
+| appId  | 推送应用ID 必填 |
+| pushId | 订阅pushID 必填 |
+| sign   | 签名 必填       |
 
 
 响应内容
@@ -1911,3 +1544,317 @@ sign|签名 必填
 }
 
 ```
+
+## 停用透传接口
+
+### 非任务推送
+
+#### pushId推送接口（透传消息） 
+
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据pushId推送                                               |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/unvarnished/pushByPushId             |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
+
+| 参数        | 描述                                                 |
+| ----------- | ---------------------------------------------------- |
+| appId       | 推送应用ID 必填                                      |
+| pushIds     | 推送设备，一批最多不能超过100个 多个英文逗号分割必填 |
+| sign        | 签名 必填                                            |
+| messageJson | Json格式，具体如下必填                               |
+
+```
+{
+    "title": 推送标题, 【string 非必填，字数显示1~32个】
+    "content": 推送内容,  【string 必填，字数限制2000以内】
+    "pushTimeInfo": {
+        "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
+        "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
+    }
+}
+```
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110002": [
+            "J0476035d625e6c64567f71487e040e7d017f0558675b",
+            "J0476045d625e6c64567f71487e040e7d017f0558675b",
+            "J0476035d625e6sd64567f71487e040e7d017f0558675b"
+        ],
+        "110003": [
+            "J0476035d625e6c64567f714567e040e7d017f0558675b"
+        ]
+    },
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+}
+```
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
+#### 别名推送接口（透传消息） 
+
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据别名推送                                                 |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/unvarnished/pushByAlias              |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
+
+| 参数        | 描述                                                 |
+| ----------- | ---------------------------------------------------- |
+| appId       | 推送应用ID 必填                                      |
+| alias       | 推送别名，一批最多不能超过100个 多个英文逗号分割必填 |
+| sign        | 签名 必填                                            |
+| messageJson | Json格式，具体如下必填                               |
+
+```
+{
+    "title": 推送标题, 【string 非必填，字数显示1~32个字符】
+    "content": 推送内容,  【string 必填，字数限制2000字节以内】
+    "pushTimeInfo": {
+        "offLine": 是否进离线消息 0 否 1 是[validTime] 【int 非必填，默认值为1】
+        "validTime": 有效时长 (1- 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
+    }
+}
+```
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110005": [
+            "alias1",
+            "alias2"
+        ]
+    },
+   "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+}
+```
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
+### 任务推送
+
+#### pushId推送接口（透传消息） 
+
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据pushId推送                                               |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/task/unvarnished/pushByPushId        |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
+
+| 参数    | 描述                           |
+| ------- | ------------------------------ |
+| taskId  | 推送任务ID 必填                |
+| appId   | 推送应用ID 必填                |
+| pushIds | 推送设备，多个英文逗号分割必填 |
+| sign    | 签名 必填                      |
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "110032",
+    "message": "非法的taskId",
+    "redirect": "",
+    "value": ""
+}
+```
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110002": [
+            "J0476035d625e6c64567f71487e040e7d017f0558675b",
+            "J0476045d625e6c64567f71487e040e7d017f0558675b",
+            "J0476035d625e6sd64567f71487e040e7d017f0558675b"
+        ],
+        "110003": [
+            "J0476035d625e6c64567f714567e040e7d017f0558675b"
+        ]
+    },
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+}
+```
+
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
+#### 别名推送接口（透传消息）
+
+| 描述     | 内容                                                         |
+| -------- | ------------------------------------------------------------ |
+| 接口功能 | 根据别名推送                                                 |
+| 请求方法 | Post                                                         |
+| 请求路径 | /garcia/api/server/push/task/unvarnished/pushByAlias         |
+| 请求HOST | server-api-push.meizu.com                                    |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                       |
+| 请求内容 | 无                                                           |
+| 响应码   | 200                                                          |
+| 响应头   | 无                                                           |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 |
+
+| 参数   | 描述                                                 |
+| ------ | ---------------------------------------------------- |
+| taskId | 推送任务ID 必填                                      |
+| appId  | 推送应用ID 必填                                      |
+| alias  | 推送别名，一批最多不能超过100个 多个英文逗号分割必填 |
+| sign   | 签名 必填                                            |
+
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+    "value": {}
+}
+```
+
+> 失败情况
+
+
+```
+{
+    "code": "110032",
+    "message": "非法的taskId",
+    "redirect": "",
+    "value": ""
+}
+```
+
+
+```
+{
+    "code": "200",
+    "message": "",
+    "value": {
+        "110005": [
+            "alias1",
+            "alias2"
+        ]
+    },
+    "msgId": "c2ee5c3bf00448cfbceb7fdf68c3c8eb"
+}
+```
+
+
+> 超速情况
+
+```
+{
+    "code": "110010",
+    "message": "应用请求频率超过限制",
+    "value": "",
+    "redirect": ""
+}
+```
+
+#### 
