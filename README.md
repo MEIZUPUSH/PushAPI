@@ -1068,7 +1068,9 @@ map部分code定义
 ```
 魅族推送服务器每隔1s将已送达或已点击的消息ID和对应设备的pushId或alias通过调用开发者http接口传给开发者(每次调用后, 魅族推送服务器会清空这些数据,下次传给业务方将是新一拨数据)
 
-注: 
+注:
+请求方式：post
+Content-Type:application/x-www-form-urlencoded
 
 消息的送达回执只支持向pushId或alias发送的消息
 
