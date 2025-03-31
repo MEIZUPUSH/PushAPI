@@ -14,9 +14,9 @@
 
 ## 透传限制说明
 
-  * 为优化flyme系统整体功耗，推送平台从**2018年6月16号** 起限制透传消息推送的使用，不排除关闭透传推送类型。使用透传推送的业务请尽快切换到通知栏推送，以避免消息推送失败。新接入的应用请使用通知栏推送
+* 为优化flyme系统整体功耗，推送平台从**2018年6月16号** 起限制透传消息推送的使用，不排除关闭透传推送类型。使用透传推送的业务请尽快切换到通知栏推送，以避免消息推送失败。新接入的应用请使用通知栏推送
 
-  * 受影响的接口及功能：
+* 受影响的接口及功能：
 
     1. pushId推送接口（透传消息）
     2. 别名推送接口（透传消息)
@@ -25,9 +25,9 @@
     5. 应用标签推送（透传消息)
     6. 在平台上进行的透传推送
 
-# API接口规范 
+# API接口规范
 
-## 接口响应规范 
+## 接口响应规范
 
 > HTTP接口遵循魅族API协议规范。返回数据格式统一如下：
 
@@ -58,10 +58,11 @@
 | 110004 | 参数不能为空            |
 | 110009 | 应用被加入黑名单        |
 | 110010 | 应用推送速率过快        |
+| 110011 | 公信消息超过限制 |
 | 110053 | 透传超过限制            |
 
 
-## 接口签名规范 
+## 接口签名规范
 
 > 请求参数分别是“k1”、“k2”、“k3”，它们的值分别是“v1”、“v2”、“v3”，计算方法如下所示：
 >
@@ -96,25 +97,25 @@
         logger.debug("basestring is:{}", new Object[]{basestring.toString()});
 
         // 使用MD5对待签名串求签
-        return MD5Util.MD5Encode(basestring.toString(),"UTF-8");
+        return MD5Util.MD5Encode(basestring.toString(),"UTF-8");
     }
     
    //示例，注意是针对接口中所有参数做签名，并且是原始字符串（非urlencode）
     public static void main(String[] args) {
-        //本示例为三个参数 appId、pushIds、messageJson
-        Map<String, String> paramMap = new HashMap<String, String>();
+        //本示例为三个参数 appId、pushIds、messageJson
+        Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("appId", "10000");
         paramMap.put("pushIds", "RA50c6348036344485d01776773577c64740465480a6b");
         paramMap.put("messageJson", "{\"title\":\"title\",\"content\":\"content\",\"pushTimeInfo\":{\"offLine\":1,\"validTime\":24}}");
-        String sign = SignUtils.getSignature(paramMap, "<APP_SECRET>");
+        String sign = SignUtils.getSignature(paramMap, "<APP_SECRET>");
     }
-    //MD5原始字符串为
-    appId=10000messageJson={"title": "title","content": "content","pushTimeInfo": {"offLine": 1,"validTime": 24}}pushIds=RA50c6348036344485d01776773577c64740465480a6b<APP_SECRET>
-    //MD5摘要 sign为
+    //MD5原始字符串为
+    appId=10000messageJson={"title": "title","content": "content","pushTimeInfo": {"offLine": 1,"validTime": 24}}pushIds=RA50c6348036344485d01776773577c64740465480a6b<APP_SECRET>
+    //MD5摘要 sign为
     ac076ff25d9900015a681cb5172aa53b
 ```
 
-## 接口请求示例 
+## 接口请求示例
 
 ```
 POST http://server-api-push.meizu.com/garcia/api/server/push/unvarnished/pushByAlias HTTP/1.1
@@ -146,9 +147,9 @@ Expires: Thu, 01 Jan 1970 00:00:00 GMT
 
 
 
-# API说明 
+# API说明
 
-## 前言 
+## 前言
 
 > 消息推送结果接口响应部分value是map集合的json格式且只返回推送非法的pushId，合法的pushId不予返回，一般情况下，pushId未注册则视为非法。
 
@@ -168,9 +169,53 @@ map部分code定义
 
 **注：平台使用pushId来标识每个独立的用户，每一台终端上每一个app拥有一个独立的pushId**
 
-## 非任务推送 
+## 图片上传
 
-### 应用场景 
+### 应用场景
+
+> 场景1：展开大图、通知栏背景图片、大小图标需提供url，此url由魅族Push提供，此接口提供为外部url转换为魅族PUSH提供的url
+
+
+| 描述     | 内容                                                        |
+| -------- |-----------------------------------------------------------|
+| 接口功能 | 将外部图片url转换为魅族PUSH提供的url                           |
+| 请求方法 | Post                                                      |
+| 请求路径 | /garcia/api/server/push/uploadImg            |
+| 请求HOST | server-api-push.meizu.com                                 |
+| 请求头   | Content-Type:application/x-www-form-urlencoded;charset=UTF-8 |
+| 备注     | 签名参数 sign=MD5_SIGN                                        |
+| 请求内容 | 无                                                         |
+| 响应码   | 200                                                       |
+| 响应头   | 无                                                         |
+| 请求参数 | 按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的       |
+
+| 参数      | 描述                                                                              |
+|---------|---------------------------------------------------------------------------------|
+| appId   | 推送应用ID 必填                                                                       |
+| imgType | 图片类型  (0,"通知栏图片"),(1,"展开大图"),(3,"桌面通知图片"),(4,"通知栏底图"),(5,"通知栏小图标"),(6,"通知栏大图标") |
+| sign    | 签名 必填                                                                           |
+| imgUrl  | 图片源url地址                                                                        |
+
+响应内容
+
+> 成功情况：
+
+```
+{
+    "code": "200",
+    "message": "",
+    "redirect": "",
+    "value": {
+        "imgType": string 类型 注册 push 后唯一标识,
+        "imgUrl": string 类型
+    }
+    "redirect":""
+}
+```
+
+## 非任务推送
+
+### 应用场景
 
 > 场景1：查找手机业务需要远程定位位置，可发送消息指令到对应的设备
 >
@@ -178,7 +223,7 @@ map部分code定义
 
 
 
-### pushId推送接口（通知栏消息） 
+### pushId推送接口（通知栏消息）
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -203,13 +248,15 @@ map部分code定义
 ```
 {
     "noticeBarInfo": {
+        "noticeMsgType": 推送消息分类 (0, 公信),(1, 私信) 【int 非必填，默认值为0】
         "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
         "title": 推送标题, 【string 必填，字数限制1~32字符】
         "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
-        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
+        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本"),(2, 大图)【int 非必填，值为0、1、2】 非VIP应用无法使用大图
         "noticeExpandContent": 展开内容, 【string noticeExpandType为文本时，必填】
+        "noticeExpandImgUrl": 展开大图(328px*120px,200kb以内) 【string noticeExpandType为大图时，必填】 此参数为VIP相关特性,非VIP应用不填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
@@ -235,6 +282,17 @@ map部分code定义
         },
         "notifyKey": "" // 非必填 默认空 分组合并推送的key,凡是带有此key的通知栏消息只会显示最后到达的一条。由数字([0-9]), 大小写字母([a-zA-Z]), 下划线(_)和中划线(-)组成, 长度不大于8个字符
     },
+    // 非VIP应用或无需VIP相关特性可不设置
+    "vipInfo": {
+        "subtitle": 推送子标题 【string 非必填，字数限制0~16】
+        "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
+        "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
+        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
+        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
+        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+    }
     //需要启用回执，设置extra，无需回执则可不设置
     "extra":{
        "callback":"http://flyme.callback",//String(必填字段), 第三方接收回执的Http接口, 最大长度128字节
@@ -317,13 +375,15 @@ map部分code定义
 ```
 {
     "noticeBarInfo": {
+        "noticeMsgType": 推送消息分类 (0, 公信),(1, 私信) 【int 非必填，默认值为0】
         "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
         "title": 推送标题, 【string 必填，字数限制1~32字符】
         "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
-        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
+        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本"),(2, 大图)【int 非必填，值为0、1、2】  非VIP应用无法使用大图
         "noticeExpandContent": 展开内容, 【string noticeExpandType为文本时，必填】
+        "noticeExpandImgUrl": 展开大图(328px*120px,200kb以内), 【string noticeExpandType为大图时，必填】 此参数为VIP相关特性,非VIP应用不填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
@@ -349,6 +409,17 @@ map部分code定义
         },
         "notifyKey": "" // 非必填 默认空 分组合并推送的key,凡是带有此key的通知栏消息只会显示最后到达的一条。由数字([0-9]), 大小写字母([a-zA-Z]), 下划线(_)和中划线(-)组成, 长度不大于8个字符
     },
+    // 非VIP应用或无需VIP相关特性可不设置
+    "vipInfo": {
+        "subtitle": 推送子标题 【string 非必填，字数限制0~16】
+        "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
+        "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
+        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
+        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
+        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+    }
     //需要启用回执，设置extra，无需回执则可不设置
     "extra":{
        "callback":"http://flyme.callback",//String(必填字段), 第三方接收回执的Http接口, 最大长度128字节
@@ -403,15 +474,15 @@ map部分code定义
 
 
 
-## 任务推送 
+## 任务推送
 
-### pushId推送 
+### pushId推送
 
-#### 应用场景 
+#### 应用场景
 
 > 场景1：浏览器对指定的某一大批量pushId用户推送活动或者新闻消息，通过先获取taskId，然后通过taskId批量推送，推送过程中可以根据taskId时时获取推送统计结果
 
-#### 获取推送taskId 
+#### 获取推送taskId
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -433,19 +504,21 @@ map部分code定义
 | sign        | 签名 必填                    |
 | messageJson | Json格式，具体如下必填       |
 
-> 通知栏类型（pushType=0）  
+> 通知栏类型（pushType=0）
 
 
 ```
 {
     "noticeBarInfo": {
+        "noticeMsgType": 推送消息分类 (0, 公信),(1, 私信) 【int 非必填，默认值为0】
         "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
         "title": 推送标题, 【string 必填，字数限制1~32字符】
         "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
-        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
+        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本"),(2, 大图)【int 非必填，值为0、1、2】  非VIP应用无法使用大图
         "noticeExpandContent": 展开内容, 【string noticeExpandType为文本时，必填】
+        "noticeExpandImgUrl": 展开大图(328px*120px,200kb以内), 【string noticeExpandType为大图时，必填】 此参数为VIP相关特性,非VIP应用不填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
@@ -471,10 +544,21 @@ map部分code定义
         },
         "notifyKey": "" // 非必填 默认空 分组合并推送的key,凡是带有此key的通知栏消息只会显示最后到达的一条。由数字([0-9]), 大小写字母([a-zA-Z]), 下划线(_)和中划线(-)组成, 长度不大于8个字符
     }
+    // 非VIP应用或无需VIP相关特性可不设置
+    "vipInfo": {
+        "subtitle": 推送子标题 【string 非必填，字数限制0~16】
+        "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
+        "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
+        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
+        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
+        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+    }
 }
 ```
 
-> 透传类型（pushType=1） 
+> 透传类型（pushType=1）
 
 
 ```
@@ -506,7 +590,7 @@ map部分code定义
 }
 ```
 
-#### pushId推送接口（通知栏消息） 
+#### pushId推送接口（通知栏消息）
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -663,9 +747,9 @@ map部分code定义
 ```
 
 
-### 全部&标签推送 
+### 全部&标签推送
 
-#### 应用场景 
+#### 应用场景
 
 > 全部推送：音乐中心搞一个全网活动，需要对所有安装此应用的用户推送消息
 
@@ -673,7 +757,7 @@ map部分code定义
 > 户感兴趣的内容。订阅了娱乐的推送娱乐新闻，订阅了美食的推送美食信息
 
 
-#### 应用全部推送 
+#### 应用全部推送
 
 ---|---
 接口功能|全部用户推送
@@ -685,7 +769,7 @@ map部分code定义
 请求内容|无
 响应码|200
 响应头|无
-请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的 
+请求参数|按POST提交表单的标准，你的任何值字符串是需要 urlencode 编码的
 
 | 参数        | 描述                             |
 | ----------- | -------------------------------- |
@@ -694,19 +778,21 @@ map部分code定义
 | sign        | 签名 必填                        |
 | messageJson | Json格式，具体如下必填           |
 
-> 通知栏类型（pushType=0）  
+> 通知栏类型（pushType=0）
 
 
 ```
 {
     "noticeBarInfo": {
+        "noticeMsgType": 推送消息分类 (0, 公信),(1, 私信) 【int 非必填，默认值为0】
         "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
         "title": 推送标题, 【string 必填，字数限制1~32字符】
         "content": 推送内容, 【string 必填，字数限制1~100字符】
     },
     "noticeExpandInfo": {
-        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本")【int 非必填，值为0、1】
+        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本"),(2, 大图)【int 非必填，值为0、1、2】 非VIP应用无法使用大图
         "noticeExpandContent": 展开内容, 【string noticeExpandType为文本时，必填】
+        "noticeExpandImgUrl": 展开大图(328px*120px,200kb以内), 【string noticeExpandType为大图时，必填】 此参数为VIP相关特性,非VIP应用不填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
@@ -718,7 +804,7 @@ map部分code定义
     "pushTimeInfo": {
         "offLine": 是否进离线消息(0 否 1 是[validTime]) 【int 非必填，默认值为1】
         "validTime": 有效时长 (1 72 小时内的正整数) 【int offLine 值为1时，必填，默认24】
-    "pushTimeType": 定时推送 (0, "即时"),(1, "定时")【必填，默认0】
+        "pushTimeType": 定时推送 (0, "即时"),(1, "定时")【必填，默认0】
         "startTime": 任务定时开始时间(yyyy-MM-dd HH:mm:ss) 【非必填pushTimeType为1必填】
     },
     "advanceInfo": {
@@ -733,6 +819,17 @@ map部分code定义
             "sound":   声音 (0关闭  1 开启), 【string 非必填，默认1】
         },
         "notifyKey": "" // 非必填 默认空 分组合并推送的key,凡是带有此key的通知栏消息只会显示最后到达的一条。由数字([0-9]), 大小写字母([a-zA-Z]), 下划线(_)和中划线(-)组成, 长度不大于8个字符
+    }
+    // 非VIP应用或无需VIP相关特性可不设置
+    "vipInfo": {
+        "subtitle": 推送子标题 【string 非必填，字数限制0~16】
+        "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
+        "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
+        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
+        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
+        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
     }
 }
 
@@ -757,7 +854,7 @@ map部分code定义
 
 ```
 
-#### 应用标签推送 
+#### 应用标签推送
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -781,19 +878,21 @@ map部分code定义
 | sign        | 签名 必填                          |
 | messageJson | Json格式，具体如下必填             |
 
-> 通知栏类型（pushType=0）  
+> 通知栏类型（pushType=0）
 
 
 ```
 {
     "noticeBarInfo": {
-       "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
+        "noticeMsgType": 推送消息分类 (0, 公信),(1, 私信) 【int 非必填，默认值为0】
+        "noticeBarType": 通知栏样式(0, "标准"),(2, "安卓原生")【int 非必填，值为0】
         "title": 推送标题, 【必填，字数限制1~32字符】
         "content": 推送内容, 【必填，字数限制1~100个字符】
     },
     "noticeExpandInfo": {
-        "noticeExpandType": 展开方式 (0, "禁用"),(1, "文本") 【必填，值为0或者1】
-        "noticeExpandContent": 展开内容, 【noticeExpandType为文本时，必填】
+        "noticeExpandType": 展开方式 (0, "标准"),(1, "文本"),(2, 大图)【int 非必填，值为0、1、2】  非VIP应用无法使用大图
+        "noticeExpandContent": 展开内容, 【string noticeExpandType为文本时，必填】
+        "noticeExpandImgUrl": 展开大图(328px*120px,200kb以内), 【string noticeExpandType为大图时，必填】 此参数为VIP相关特性,非VIP应用不填
     },
     "clickTypeInfo": {
         "clickType": 点击动作 (0,"打开应用"),(1,"打开应用页面"),(2,"打开URI页面"),(3, "应用客户端自定义")【int 非必填,默认为0】
@@ -823,6 +922,17 @@ map部分code定义
         },
         "notifyKey": "" // 非必填 默认空 分组合并推送的key,凡是带有此key的通知栏消息只会显示最后到达的一条。由数字([0-9]), 大小写字母([a-zA-Z]), 下划线(_)和中划线(-)组成, 长度不大于8个字符
     }
+    // 非VIP应用或无需VIP相关特性可不设置
+    "vipInfo": {
+        "subtitle": 推送子标题 【string 非必填，字数限制0~16】
+        "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
+        "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
+        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
+        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
+        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+    }
 }
 
 
@@ -850,7 +960,7 @@ map部分code定义
 
 
 
-#### 取消任务推送 
+#### 取消任务推送
 
 
 | 描述     | 内容                                                         |
@@ -908,9 +1018,9 @@ map部分code定义
 }
 ```
 
-## 推送统计 
+## 推送统计
 
-### 获取任务推送统计 
+### 获取任务推送统计
 
 
 | 描述     | 内容                                                         |
@@ -967,7 +1077,7 @@ map部分code定义
 }
 ```
 
-### 获取应用推送统计 
+### 获取应用推送统计
 
 
 | 描述     | 内容                                                         |
@@ -1043,9 +1153,9 @@ map部分code定义
 }
 ```
 
-## 高级功能 
+## 高级功能
 
-### 消息送达与回执  
+### 消息送达与回执
 
 - 支持回执接口
 
@@ -1117,7 +1227,7 @@ targets： 一批alias或者pushId集合
 
 ## 订阅服务
 
-### 获取订阅开关状态 
+### 获取订阅开关状态
 
 
 | 描述     | 内容                                                         |
@@ -1157,7 +1267,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 修改订阅开关状态 
+### 修改订阅开关状态
 
 
 | 描述     | 内容                                                         |
@@ -1200,7 +1310,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 修改所有开关状态  
+### 修改所有开关状态
 
 
 | 描述     | 内容                                                         |
@@ -1242,7 +1352,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 别名订阅 
+### 别名订阅
 
 
 | 描述     | 内容                                                         |
@@ -1283,7 +1393,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 取消别名订阅 
+### 取消别名订阅
 
 
 | 描述     | 内容                                                         |
@@ -1323,7 +1433,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 获取订阅别名  
+### 获取订阅别名
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -1362,7 +1472,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 标签订阅  
+### 标签订阅
 
 
 | 描述     | 内容                                                         |
@@ -1412,7 +1522,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 取消标签订阅  
+### 取消标签订阅
 
 
 | 描述     | 内容                                                         |
@@ -1462,7 +1572,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 获取订阅标签  
+### 获取订阅标签
 
 
 | 描述     | 内容                                                         |
@@ -1511,7 +1621,7 @@ targets： 一批alias或者pushId集合
 
 ```
 
-### 取消订阅所有标签 
+### 取消订阅所有标签
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -1551,7 +1661,7 @@ targets： 一批alias或者pushId集合
 
 ### 非任务推送
 
-#### pushId推送接口（透传消息） 
+#### pushId推送接口（透传消息）
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -1629,7 +1739,7 @@ targets： 一批alias或者pushId集合
 }
 ```
 
-#### 别名推送接口（透传消息） 
+#### 别名推送接口（透传消息）
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
@@ -1705,7 +1815,7 @@ targets： 一批alias或者pushId集合
 
 ### 任务推送
 
-#### pushId推送接口（透传消息） 
+#### pushId推送接口（透传消息）
 
 | 描述     | 内容                                                         |
 | -------- | ------------------------------------------------------------ |
