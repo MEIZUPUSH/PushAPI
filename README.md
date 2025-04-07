@@ -45,21 +45,21 @@
 > Api returnCode定义
 
 
-| code   | value                   |
-| ------ | ----------------------- |
-| 200    | 正常                    |
-| 500    | 其他异常                |
-| 1001   | 系统错误                |
-| 1003   | 服务器忙                |
+| code   | value         |
+| ------ |---------------|
+| 200    | 正常            |
+| 500    | 其他异常          |
+| 1001   | 系统错误          |
+| 1003   | 服务器忙          |
 | 1005   | 参数错误，请参考API文档 |
-| 1006   | 签名认证失败            |
-| 110000 | appId不合法             |
-| 110001 | appKey不合法            |
-| 110004 | 参数不能为空            |
-| 110009 | 应用被加入黑名单        |
-| 110010 | 应用推送速率过快        |
-| 110011 | 公信消息超过限制 |
-| 110053 | 透传超过限制            |
+| 1006   | 签名认证失败        |
+| 110000 | appId不合法      |
+| 110001 | appKey不合法     |
+| 110004 | 参数不能为空        |
+| 110009 | 应用被加入黑名单      |
+| 110010 | 应用推送速率过快      |
+| 110011 | 单日公信消息数超过限制   |
+| 110053 | 透传超过限制        |
 
 
 ## 接口签名规范
@@ -287,11 +287,11 @@ map部分code定义
         "subtitle": 推送子标题 【string 非必填，字数限制0~16】
         "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
         "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
-        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
-        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
-        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
-        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
-        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+        "notGroup": 是否独立成组 (0 否 1是) 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】与底图互斥
+        "backgroundImgUrl": 底图 352px*91px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色及展开大图互斥
+        "smallIconUrl": 小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
     }
     //需要启用回执，设置extra，无需回执则可不设置
     "extra":{
@@ -414,11 +414,11 @@ map部分code定义
         "subtitle": 推送子标题 【string 非必填，字数限制0~16】
         "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
         "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
-        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
-        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
-        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
-        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
-        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+        "notGroup": 是否独立成组 (0 否 1是) 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】与底图互斥
+        "backgroundImgUrl": 底图 352px*91px(jpg、png、jpeg) 200kb以内 【str 非必填】与标题颜色及展开大图互斥
+        "smallIconUrl": 小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 大图标 42px*42px(jpg、png、jpeg) 100kb以内 【str 非必填】与底图互斥
     }
     //需要启用回执，设置extra，无需回执则可不设置
     "extra":{
@@ -549,11 +549,11 @@ map部分code定义
         "subtitle": 推送子标题 【string 非必填，字数限制0~16】
         "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
         "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
-        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
-        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
-        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
-        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
-        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+        "notGroup": 是否独立成组 (0 否 1是) 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】与底图互斥
+        "backgroundImgUrl": 底图 352px*91px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色及展开大图互斥
+        "smallIconUrl": 小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 大图标 42px*42px(jpg、png、jpeg) 100kb以内 【str 非必填】 与底图互斥
     }
 }
 ```
@@ -825,11 +825,11 @@ map部分code定义
         "subtitle": 推送子标题 【string 非必填，字数限制0~16】
         "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
         "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
-        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
-        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
-        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
-        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
-        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+        "notGroup": 是否独立成组 (0 否 1是) 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】与底图互斥
+        "backgroundImgUrl": 底图 352px*91px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色及展开大图互斥
+        "smallIconUrl": 小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
     }
 }
 
@@ -927,11 +927,11 @@ map部分code定义
         "subtitle": 推送子标题 【string 非必填，字数限制0~16】
         "pullDownTop": 是否即时置顶 (0 否 1是) 与定时置顶互斥 【int 非必填，默认0】
         "timeTop": 定时置顶 (1800 7200 秒内的正整数) 与即时置顶互斥 【int 非必填】
-        "notGroup": 是否独立成组 (0 否 1是) 带大小图、自定义底图、自定义应用图标情形均独立成组 【int 非必填，默认0】
-        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】
-        "backgroundImgUrl": 底图 328px*120px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色互斥
-        "smallIconUrl": 自定义小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
-        "bigIconUrl": 自定义大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
+        "notGroup": 是否独立成组 (0 否 1是) 【int 非必填，默认0】
+        "titleColor": 主标题颜色 (支持 #206CFF蓝色 #E42D22红色) 【str 非必填】与底图互斥
+        "backgroundImgUrl": 底图 352px*91px(jpg、png、jpeg) 200kb以内 【str 非必填】 与标题颜色及展开大图互斥
+        "smallIconUrl": 小图标 18px*18px(jpg、png、jpeg) 100kb以内 【str 非必填】
+        "bigIconUrl": 大图标 42px*42px(jpg、png、jpeg) 100kb以内  【str 非必填】 与底图互斥
     }
 }
 
